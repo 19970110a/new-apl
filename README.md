@@ -87,3 +87,6 @@ Figma：https://www.figma.com/file/8jWrqcdFF1EUKIIPQ8m5Cp/%E7%84%A1%E9%A1%8C?typ
 ### メールアドレス・パスワード変更確認項目
 直接変更できるものではなく、一旦メールなどを介して専用のページで変更する画面遷移になっているか？
 - [ ] パスワード
+
+### ER図　URL
+draw.io:https://drive.google.com/file/d/1q2yInkqCgpgVlsECIvdPaVmOlG10KRNf/view?usp=sharing
