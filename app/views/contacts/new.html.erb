@@ -1,0 +1,29 @@
+<%= form_with model: @contact, local: true do |form| %>
+    <div class="contact-form">
+      <h2>SAKE ZUKI</h2>
+      <p>お問い合わせフォーム</p>
+  
+      <div class="field">
+        <%= form.label :name, "名前" %>
+        <%= form.text_field :name, placeholder: "デキストを追加" %>
+      </div>
+  
+      <div class="field">
+        <%= form.label :email, "メール" %>
+        <%= form.email_field :email, placeholder: "name@example.com" %>
+      </div>
+  
+      <div class="field">
+        <%= form.label :message, "内容" %>
+        <%= form.text_area :message, placeholder: "こちらにお問い合わせ内容をご記入ください" %>
+      </div>
+  
+      <div class="actions">
+        <%= form.submit "送信", class: "submit-button" %>
+      </div>
+
+      <div class="top-button">
+      <%= link_to 'トップ', root_path, class: "button" %>
+      </div>
+    </div>
+  <% end %>
