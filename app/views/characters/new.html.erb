@@ -1,0 +1,11 @@
+<h2>キャラクターを選ぼう！</h2>
+
+<div class="character-selection">
+  <% # Characterモデルのデータをイテレーション処理 %>
+  <% @characters.each do |character| %>
+    <!-- 例えば、character.animalが画像ファイル名を含むと仮定しています -->
+    <%= link_to image_tag("animals/#{character.animal}.jpg"), choose_character_path(character) %>
+  <% end %>
+</div>
+
+<%= link_to '確定', some_path, method: :post, class: "button" %>
