@@ -1,8 +1,7 @@
 class CharactersController < ApplicationController
-def new
-    # Characterモデルの全レコードを取得します
+  def index
     @characters = Character.all
   end
 
-  # createアクションや他のアクションはここに追加します
+  # 他のアクションを必要に応じて追加
 end

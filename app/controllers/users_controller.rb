@@ -1,15 +1,13 @@
 class UsersController < ApplicationController
-    def new
+def new
     @user = User.new
   end
 
   def create
     @user = User.new(user_params)
     if @user.save
-      # ユーザーを動物を選択する画面にリダイレクト
-      redirect_to choose_animal_path
+      redirect_to root_path, notice: 'ユーザー登録が完了しました。'
     else
-      # 登録に失敗した場合、フォームを再度表示
       render :new
     end
   end
@@ -17,6 +15,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :weight)
+    params.require(:user).permit(:username, :email, :password, :password_confirmation, :weight)
   end
 end

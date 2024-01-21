@@ -1,19 +1,16 @@
 class ContactsController < ApplicationController
-    def new
-    @contact = Contact.new
-  end
-
   def create
     @contact = Contact.new(contact_params)
     if @contact.save
-      # ここに成功時の処理を書く
+      # 保存に成功したときの処理をここに記述します。
+      # 例: リダイレクト、フラッシュメッセージの設定など
     else
-      render :new
+      # 保存に失敗したときは、エラーメッセージを含めてフォームを再表示
+      render 'static_pages/contact'
     end
   end
 
   private
-
   def contact_params
     params.require(:contact).permit(:name, :email, :message)
   end

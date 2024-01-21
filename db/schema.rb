@@ -97,13 +97,14 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_105846) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "email"
-    t.string "crypted_password"
+    t.string "username", null: false
+    t.string "email", null: false
+    t.string "crypted_password", null: false
     t.integer "weight"
     t.string "salt"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
 
   add_foreign_key "character_bodies", "characters"

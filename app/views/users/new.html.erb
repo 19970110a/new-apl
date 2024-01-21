@@ -1,25 +1,35 @@
-<%= form_with(model: @user, local: true) do |form| %>
-  <div class="form-field">
-    <%= form.label :username, "名前" %>
-    <%= form.text_field :username, placeholder: "名前を入力" %>
+<%= form_for @user do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+      <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="field">
+    <%= f.label :username %>
+    <%= f.text_field :username %>
   </div>
-
-  <div class="form-field">
-    <%= form.label :email, "メール" %>
-    <%= form.email_field :email, placeholder: "メールアドレスを入力" %>
+  <div class="field">
+    <%= f.label :email %>
+    <%= f.email_field :email %>
   </div>
-
-  <div class="form-field">
-    <%= form.label :crypted_password, "パスワード" %>
-    <%= form.password_field :crypted_password %>
+  <div class="field">
+    <%= f.label :password %>
+    <%= f.password_field :password %>
   </div>
-
-  <div class="form-field">
-    <%= form.label :weight, "体重" %>
-    <%= form.number_field :weight, placeholder: "体重を入力", step: 0.1 %>
+  <div class="field">
+    <%= f.label :password_confirmation, "Password Confirmation" %>
+    <%= f.password_field :password_confirmation %>
   </div>
-
+  <div class="field">
+    <%= f.label :weight %>
+    <%= f.number_field :weight %>
+  </div>
   <div class="actions">
-    <%= form.submit "登録しよ〜" %>
+    <%= f.submit "Register" %>
   </div>
 <% end %>
