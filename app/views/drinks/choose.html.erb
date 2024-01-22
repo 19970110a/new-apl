@@ -1,0 +1,43 @@
+<h1>Drinks#choose</h1>
+<p>Find me in app/views/drinks/choose.html.erb</p>
+<h1>お酒を選ぼう！</h1>
+
+<!-- 仮のお酒リスト -->
+<div class="drink-list">
+  <div class="drink-item">
+    <img src="beer.jpg" alt="ビール">
+    <p>ビール</p>
+    <p>350ml ・ 5%</p>
+    <div class="quantity-controls">
+      <button class="decrease">➖</button>
+      <span class="quantity">0</span>
+      <button class="increase">➕</button>
+    </div>
+  </div>
+  <!-- 他のお酒の項目も同様に追加 -->
+</div>
+
+<button id="submit-drink">飲む！</button>
+
+<script>
+// 数量を増減するためのJavaScriptのコード
+// このスクリプトはインラインで記述するか、外部のJavaScriptファイルに記述しても構いません。
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('.increase').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const quantitySpan = e.target.parentElement.querySelector('.quantity');
+      quantitySpan.textContent = parseInt(quantitySpan.textContent) + 1;
+    });
+  });
+
+  document.querySelectorAll('.decrease').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const quantitySpan = e.target.parentElement.querySelector('.quantity');
+      let quantity = parseInt(quantitySpan.textContent);
+      if (quantity > 0) {
+        quantitySpan.textContent = quantity - 1;
+      }
+    });
+  });
+});
+</script>
