@@ -1,0 +1,43 @@
+<h1>Home#top</h1>
+<p>Find me in app/views/home/top.html.erb</p>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>親密度LV.1</title>
+  <!-- スタイルシートのリンクやその他のメタタグをここに挿入 -->
+</head>
+<body>
+  <header>
+    <!-- ヘッダーに含まれる可能性があるナビゲーションやロゴ -->
+  </header>
+
+  <main>
+    <h1>進捗度LV.1</h1>
+    <p>飲酒クラブ</p>
+    <div id="progress-bar">
+      <!-- 進捗バーの実装 -->
+    </div>
+    <div class="speech-bubble">
+      <p>お酒を飲もう！</p>
+    </div>
+    <div class="panda-image">
+      <!-- パンダの画像 -->
+      <img src="path_to_panda_image.jpg" alt="パンダ">
+    </div>
+    <div class="actions">
+    <%= link_to '飲むよ！', choose_drink_path, class: 'button' %>
+      <button>共有！</button>
+    </div>
+    <%= button_to 'ログアウト', logout_path, method: :delete, class: 'logout-button' %>
+  </main>
+
+  <footer>
+    <!-- フッターに含まれる可能性があるコピーライト情報やリンク -->
+  </footer>
+
+  <script>
+    // 必要に応じてJavaScript
+  </script>
+</body>
+</html>
