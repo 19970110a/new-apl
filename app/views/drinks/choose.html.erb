@@ -1,43 +1,21 @@
-<h1>Drinks#choose</h1>
-<p>Find me in app/views/drinks/choose.html.erb</p>
 <h1>お酒を選ぼう！</h1>
 
-<!-- 仮のお酒リスト -->
 <div class="drink-list">
-  <div class="drink-item">
-    <img src="beer.jpg" alt="ビール">
-    <p>ビール</p>
-    <p>350ml ・ 5%</p>
-    <div class="quantity-controls">
-      <button class="decrease">➖</button>
-      <span class="quantity">0</span>
-      <button class="increase">➕</button>
+  <% @master_drinks.each do |master_drink| %>
+    <div class="drink-item" id="drink_<%= master_drink.id %>">
+      <%# 画像の表示方法は、保存された画像データによります %>
+      <% if master_drink.drink_image.present? %>
+        <%= image_tag url_for(master_drink.drink_image), alt: master_drink.select_drink %>
+      <% end %>
+      <p><%= master_drink.select_drink %></p>
+      <p><%= master_drink.alcohol_amount %>ml ・ <%= master_drink.alcohol_percentage %>%</p>
+      <div class="quantity-controls">
+        <%= button_to '➖', decrement_drink_path(master_drink), method: :post, remote: true, class: 'decrease' %>
+        <span class="quantity" id="drink_<%= master_drink.id %>_quantity">0</span>
+        <%= button_to '➕', increment_drink_path(master_drink), method: :post, remote: true, class: 'increase' %>
+      </div>
     </div>
-  </div>
-  <!-- 他のお酒の項目も同様に追加 -->
+  <% end %>
+  <%= link_to '作ったお酒を登録する！', new_user_drink_path, class: "button" %>
+  <%= link_to '戻る', top_path, class: "button" %>
 </div>
-
-<button id="submit-drink">飲む！</button>
-
-<script>
-// 数量を増減するためのJavaScriptのコード
-// このスクリプトはインラインで記述するか、外部のJavaScriptファイルに記述しても構いません。
-document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('.increase').forEach(button => {
-    button.addEventListener('click', (e) => {
-      const quantitySpan = e.target.parentElement.querySelector('.quantity');
-      quantitySpan.textContent = parseInt(quantitySpan.textContent) + 1;
-    });
-  });
-
-  document.querySelectorAll('.decrease').forEach(button => {
-    button.addEventListener('click', (e) => {
-      const quantitySpan = e.target.parentElement.querySelector('.quantity');
-      let quantity = parseInt(quantitySpan.textContent);
-      if (quantity > 0) {
-        quantitySpan.textContent = quantity - 1;
-      }
-    });
-  });
-});
-</script>
