@@ -22,4 +22,11 @@ Rails.application.routes.draw do
    get 'choose_character', to: 'characters#index', as: 'choose_character'
    get 'top', to: 'home#top', as: :top
    get 'choose_drink', to: 'drinks#choose', as: :choose_drink
+   resources :drinks do
+    member do
+      post :increment
+      post :decrement
+    end
+  end
+  resources :user_drinks, only: [:new, :create]
 end

@@ -1,0 +1,16 @@
+<h1>お酒を追加</h1>
+
+<%= form_with model: @user_drink, local: true do |form| %>
+  <div class="field">
+    <%= form.label :master_drink_id, "お酒の選択" %>
+    <%= form.collection_select :master_drink_id, @master_drinks, :id, :select_drink, include_blank: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :drink_date, "飲んだ日" %>
+    <%= form.date_field :drink_date %>
+  </div>
+
+  <%= form.submit "お酒を追加する" %>
+  <%= link_to '戻る', top_path, class: "button" %>
+<% end %>
