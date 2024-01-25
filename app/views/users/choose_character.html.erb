@@ -1,0 +1,20 @@
+<%= form_for(@user, url: save_character_path) do |f| %>
+  <% Character.all.each do |character| %>
+    <div class="character-choice">
+      <%= radio_button_tag 'user[character_id]', character.id, @user.character_id == character.id, id: "character_#{character.id}" %>
+      <%= label_tag "character_#{character.id}" do %>
+        <% case character.animal %>
+        <% when 'Panda' %>
+          <%= image_tag('panda.png', alt: 'パンダ') %>
+        <% when 'Gorilla' %>
+          <%= image_tag('gorilla.png', alt: 'ゴリラ') %>
+        <% when 'Crocodile' %>
+          <%= image_tag('crocodile.png', alt: 'ワニ') %>
+        <% when 'Bear' %>
+          <%= image_tag('bear.png', alt: 'クマ') %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+  <%= f.submit "選択完了" %>
+<% end %>

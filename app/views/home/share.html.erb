@@ -1,0 +1,6 @@
+<h1>Xで共有</h1>
+<%= form_with url: "https://twitter.com/intent/tweet", method: "get", target: "_blank" do |form| %>
+  <%= hidden_field_tag :text, "ここに共有するテキストを挿入" %>
+  <%= form.submit "POSTする！" %>
+<% end %>
+<%= link_to "戻る", top_path, class: "button" %>

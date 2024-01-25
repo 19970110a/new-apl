@@ -14,7 +14,7 @@
 
   <main>
     <h1>進捗度LV.1</h1>
-    <p>飲酒クラブ</p>
+    <%= link_to '飲酒グラフ', drinking_graph_path, class: 'button' %>
     <div id="progress-bar">
       <!-- 進捗バーの実装 -->
     </div>
@@ -27,7 +27,7 @@
     </div>
     <div class="actions">
     <%= link_to '飲むよ！', choose_drink_path, class: 'button' %>
-      <button>共有！</button>
+    <%= link_to "共有！", "https://twitter.com/intent/tweet?text=お好きなテキスト", target: "_blank", class: "button" %>
     </div>
     <%= button_to 'ログアウト', logout_path, method: :delete, class: 'logout-button' %>
   </main>

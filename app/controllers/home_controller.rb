@@ -12,4 +12,13 @@ class HomeController < ApplicationController
       redirect_to login_path, alert: 'ログインが必要です。'
     end
   end
+
+  def drinking_graph
+    # 飲酒データを集計するロジック
+  end
+
+  def share
+    # 必要なデータを準備する
+  end
+  
 end
