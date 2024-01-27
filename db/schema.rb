@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_15_105846) do
+ActiveRecord::Schema[7.0].define(version: 2024_01_26_122203) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -77,15 +77,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_105846) do
     t.index ["user_id"], name: "index_user_and_drinks_on_user_id"
   end
 
-  create_table "user_characters", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "character_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["character_id"], name: "index_user_characters_on_character_id"
-    t.index ["user_id"], name: "index_user_characters_on_user_id"
-  end
-
   create_table "user_drinks", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "master_drink_id", null: false
@@ -104,6 +95,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_105846) do
     t.string "salt"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "character_id"
+    t.index ["character_id"], name: "index_users_on_character_id"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
@@ -113,8 +106,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_15_105846) do
   add_foreign_key "random_speeches", "characters"
   add_foreign_key "user_and_drinks", "master_user_drinks"
   add_foreign_key "user_and_drinks", "users"
-  add_foreign_key "user_characters", "characters"
-  add_foreign_key "user_characters", "users"
   add_foreign_key "user_drinks", "master_drinks"
   add_foreign_key "user_drinks", "users"
+  add_foreign_key "users", "characters"
 end

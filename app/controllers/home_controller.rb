@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   before_action :require_login
 
   def top
-    # ここにトップページのロジックを追加
+    @character = current_user.character
   end
 
   private
