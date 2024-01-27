@@ -1,5 +1,7 @@
 class Character < ApplicationRecord
-  has_many :user_characters
-  has_many :users, through: :user_characters
-  # クラスの内容
+  has_many :users
+  def image_filename
+    # キャラクターに応じた画像ファイル名を返すロジック
+    "#{animal.downcase}.png"
+  end
 end

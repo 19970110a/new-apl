@@ -1,35 +1,64 @@
 <%= form_for @user do |f| %>
-  <% if @user.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
-      <ul>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+    <% if @user.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+        <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+  
+    <!-- ここからユーザー情報入力フィールド -->
+    <div class="field">
+      <%= f.label :username %>
+      <%= f.text_field :username %>
+    </div>
+    <div class="field">
+      <%= f.label :email %>
+      <%= f.email_field :email %>
+    </div>
+    <div class="field">
+      <%= f.label :password %>
+      <%= f.password_field :password %>
+    </div>
+    <div class="field">
+      <%= f.label :password_confirmation, "Password Confirmation" %>
+      <%= f.password_field :password_confirmation %>
+    </div>
+    <div class="field">
+      <%= f.label :weight %>
+      <%= f.number_field :weight %>
+    </div>
+  
+    <!-- ここからキャラクター選択部分 -->
+    <div class="characters-container">
+      <%= f.label :character_id, "Choose Your Character" %>
+      <label for="user_character_id_1">
+        <%= f.radio_button :character_id, "1" %>
+        <%= image_tag('panda.png', alt: 'Panda') %>
+        <p>Panda</p>
+      </label>
+      <label for="user_character_id_2">
+        <%= f.radio_button :character_id, "2" %>
+        <%= image_tag('gorilla.png', alt: 'Gorilla') %>
+        <p>Gorilla</p>
+      </label>
+      <label for="user_character_id_3">
+        <%= f.radio_button :character_id, "3" %>
+        <%= image_tag('crocodile.png', alt: 'Crocodile') %>
+        <p>Crocodile</p>
+      </label>
+      <label for="user_character_id_4">
+        <%= f.radio_button :character_id, "4" %>
+        <%= image_tag('bear.png', alt: 'Bear') %>
+        <p>Bear</p>
+      </label>
+    </div>
+  
+    <!-- 送信ボタン -->
+    <div class="actions">
+      <%= f.submit "Register" %>
     </div>
   <% end %>
-  <div class="field">
-    <%= f.label :username %>
-    <%= f.text_field :username %>
-  </div>
-  <div class="field">
-    <%= f.label :email %>
-    <%= f.email_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label :password %>
-    <%= f.password_field :password %>
-  </div>
-  <div class="field">
-    <%= f.label :password_confirmation, "Password Confirmation" %>
-    <%= f.password_field :password_confirmation %>
-  </div>
-  <div class="field">
-    <%= f.label :weight %>
-    <%= f.number_field :weight %>
-  </div>
-  <div class="actions">
-    <%= f.submit "Register" %>
-  </div>
-<% end %>

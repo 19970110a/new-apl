@@ -22,7 +22,12 @@
       <p>お酒を飲もう！</p>
     </div>
     <div class="panda-image">
-      <!-- パンダの画像 -->
+    <% if @character %>
+    <div class="selected-character">
+    <%= image_tag(@character.animal.downcase + '.png', alt: @character.animal) %>
+      <p><%= @character.animal %></p>
+    </div>
+  <% end %>
       <img src="path_to_panda_image.jpg" alt="パンダ">
     </div>
     <div class="actions">
