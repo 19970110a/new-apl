@@ -1,8 +1,9 @@
 class User < ApplicationRecord
   authenticates_with_sorcery!
   belongs_to :character, optional: true
-  has_many :user_drinks
   has_many :user_characters
+  has_many :records
+  has_many :drinks, through: :records
 
   # バリデーションの追加
   validates :password, length: { minimum: 3 }

@@ -1,25 +1,23 @@
 class DrinksController < ApplicationController
   def choose
-    @master_drinks = MasterDrink.all
+    @drinks = Drink.all
   end
 
   def increment
-    @master_drink = MasterDrink.find(params[:id])
-    # ここで @master_drink の数量を増やすロジックを実装
-    @master_drink.save
-
+    @drink = Drink.find(params[:id])
+    # ここで数量を増やす処理
     respond_to do |format|
       format.turbo_stream
+      format.html { redirect_to drinks_path } # 必要に応じて修正
     end
   end
 
   def decrement
-    @master_drink = MasterDrink.find(params[:id])
-    # ここで @master_drink の数量を減らすロジックを実装
-    @master_drink.save
-
+    @drink = Drink.find(params[:id])
+    # ここで数量を減らす処理
     respond_to do |format|
       format.turbo_stream
+      format.html { redirect_to drinks_path } # 必要に応じて修正
     end
   end
 end

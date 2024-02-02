@@ -1,21 +1,20 @@
 <h1>お酒を選ぼう！</h1>
 
 <div class="drink-list">
-  <% @master_drinks.each do |master_drink| %>
-    <div class="drink-item" id="drink_<%= master_drink.id %>">
-      <%# 画像の表示方法は、保存された画像データによります %>
-      <% if master_drink.drink_image.present? %>
-        <%= image_tag url_for(master_drink.drink_image), alt: master_drink.select_drink %>
-      <% end %>
-      <p><%= master_drink.select_drink %></p>
-      <p><%= master_drink.alcohol_amount %>ml ・ <%= master_drink.alcohol_percentage %>%</p>
-      <div class="quantity-controls">
-        <%= button_to '➖', decrement_drink_path(master_drink), method: :post, remote: true, class: 'decrease' %>
-        <span class="quantity" id="drink_<%= master_drink.id %>_quantity">0</span>
-        <%= button_to '➕', increment_drink_path(master_drink), method: :post, remote: true, class: 'increase' %>
+  <% @drinks.each do |drink| %>
+    <div class="drink-item" id="drink_<%= drink.id %>">
+      <div class="drink-details">
+        <p><%= drink.name %></p>
+        <p><%= drink.volume %>ml ・ <%= drink.degree %>%</p>
+        <div class="quantity-controls">
+          <%= button_to '➖', decrement_drink_path(drink), method: :post, remote: true, class: 'decrease' %>
+          <span class="quantity" id="drink_<%= drink.id %>_quantity">01</span>
+          <%= button_to '➕', increment_drink_path(drink), method: :post, remote: true, class: 'increase' %>
+        </div>
+        <%= button_to '飲む', drink_path(drink), method: :post, remote: true, class: 'drink-button' %>
       </div>
     </div>
   <% end %>
-  <%= link_to '作ったお酒を登録する！', new_user_drink_path, class: "button" %>
-  <%= link_to '戻る', top_path, class: "button" %>
+  <%= link_to '作ったお酒を登録する！', new_user_drink_path, class: "button register-button" %>
+  <%= link_to '戻る', top_path, class: "button back-button" %>
 </div>

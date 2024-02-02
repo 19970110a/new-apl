@@ -1,4 +1,3 @@
-<%= form_with url: increment_drink_path(drink), method: :post, data: { turbo_stream: true } do |form| %>
-    <%= form.button '➕', class: 'increase' %>
-  <% end %>
-  
+<%= form_with url: increment_drink_path(@drink), method: :post, data: { turbo_stream: true } do |form| %>
+  <%= form.button '➕', class: 'increase' %>
+<% end %>
