@@ -10,9 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_01_26_122203) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_01_095026) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "character_bodies", force: :cascade do |t|
     t.bigint "character_id", null: false
@@ -38,24 +44,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_26_122203) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "master_drinks", force: :cascade do |t|
-    t.string "select_drink"
-    t.binary "drink_image"
-    t.integer "alcohol_percentage"
-    t.integer "alcohol_amount"
+  create_table "drinks", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "degree", null: false
+    t.integer "volume", null: false
+    t.bigint "category_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "master_user_drinks", force: :cascade do |t|
-    t.bigint "user_drink_id", null: false
-    t.bigint "master_drink_id", null: false
-    t.integer "alcohol_percentage"
-    t.integer "alcohol_amount"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["master_drink_id"], name: "index_master_user_drinks_on_master_drink_id"
-    t.index ["user_drink_id"], name: "index_master_user_drinks_on_user_drink_id"
+    t.index ["category_id"], name: "index_drinks_on_category_id"
+    t.index ["user_id"], name: "index_drinks_on_user_id"
   end
 
   create_table "random_speeches", force: :cascade do |t|
@@ -67,24 +65,16 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_26_122203) do
     t.index ["character_id"], name: "index_random_speeches_on_character_id"
   end
 
-  create_table "user_and_drinks", force: :cascade do |t|
+  create_table "records", force: :cascade do |t|
+    t.date "date", null: false
+    t.integer "quantity", null: false
+    t.integer "alcohol_grams", null: false
+    t.bigint "drink_id", null: false
     t.bigint "user_id", null: false
-    t.bigint "master_user_drink_id", null: false
-    t.date "drink_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["master_user_drink_id"], name: "index_user_and_drinks_on_master_user_drink_id"
-    t.index ["user_id"], name: "index_user_and_drinks_on_user_id"
-  end
-
-  create_table "user_drinks", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "master_drink_id", null: false
-    t.date "drink_date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["master_drink_id"], name: "index_user_drinks_on_master_drink_id"
-    t.index ["user_id"], name: "index_user_drinks_on_user_id"
+    t.index ["drink_id"], name: "index_records_on_drink_id"
+    t.index ["user_id"], name: "index_records_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -101,12 +91,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_01_26_122203) do
   end
 
   add_foreign_key "character_bodies", "characters"
-  add_foreign_key "master_user_drinks", "master_drinks"
-  add_foreign_key "master_user_drinks", "user_drinks"
+  add_foreign_key "drinks", "categories"
+  add_foreign_key "drinks", "users"
   add_foreign_key "random_speeches", "characters"
-  add_foreign_key "user_and_drinks", "master_user_drinks"
-  add_foreign_key "user_and_drinks", "users"
-  add_foreign_key "user_drinks", "master_drinks"
-  add_foreign_key "user_drinks", "users"
+  add_foreign_key "records", "drinks"
+  add_foreign_key "records", "users"
   add_foreign_key "users", "characters"
 end
