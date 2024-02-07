@@ -3,7 +3,7 @@ class User < ApplicationRecord
   belongs_to :character, optional: true
   has_many :user_characters
   has_many :records
-  has_many :drinks, through: :records
+  has_many :drinks
 
   # バリデーションの追加
   validates :password, length: { minimum: 3 }

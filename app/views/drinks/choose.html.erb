@@ -6,15 +6,10 @@
       <div class="drink-details">
         <p><%= drink.name %></p>
         <p><%= drink.volume %>ml ・ <%= drink.degree %>%</p>
-        <div class="quantity-controls">
-          <%= button_to '➖', decrement_drink_path(drink), method: :post, remote: true, class: 'decrease' %>
-          <span class="quantity" id="drink_<%= drink.id %>_quantity">01</span>
-          <%= button_to '➕', increment_drink_path(drink), method: :post, remote: true, class: 'increase' %>
-        </div>
-        <%= button_to '飲む', drink_path(drink), method: :post, remote: true, class: 'drink-button' %>
+        <%= button_to '飲む', records_path(drink_id: drink.id, quantity: 1), method: :post, class: 'drink-button', data: { turbo: false } %>
       </div>
     </div>
   <% end %>
-  <%= link_to '作ったお酒を登録する！', new_user_drink_path, class: "button register-button" %>
+  <%= link_to '作ったお酒を登録する！', new_drink_path, class: "button register-button" %>
   <%= link_to '戻る', top_path, class: "button back-button" %>
 </div>

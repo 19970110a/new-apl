@@ -1,0 +1,26 @@
+<h1>新しいお酒を登録する</h1>
+<%= form_with model: @drink, local: true do |form| %>
+    <%= render 'shared/errors', object: @drink %>
+  <div>
+    <%= form.label :name, "名前" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :degree, "度数" %>
+    <%= form.number_field :degree %>
+  </div>
+
+  <div>
+    <%= form.label :volume, "容量" %>
+    <%= form.number_field :volume %>
+  </div>
+
+  <div>
+    <%= form.label :category_id, "カテゴリ" %>
+    <%= form.collection_select :category_id, Category.all, :id, :name %>
+  </div>
+
+  <%= form.submit "登録する" %>
+  <%= link_to '戻る', top_path, class: "button back-button" %>
+<% end %>
