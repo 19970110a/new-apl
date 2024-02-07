@@ -3,8 +3,9 @@ class Drink < ApplicationRecord
   belongs_to :user
   has_many :records
   has_many :users, through: :records
-
-  validates :name, presence: true, length: { maximum: 255 }
-  validates :degree, presence: true
-  validates :volume, presence: true
+  has_many :drinks
+  
+  validates :name, presence: true
+  validates :degree, numericality: true
+  validates :volume, numericality: { only_integer: true }
 end

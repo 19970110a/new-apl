@@ -31,4 +31,7 @@ Rails.application.routes.draw do
  
   # UserDrinks
   resources :user_drinks, only: [:new, :create]
+  resources :records, only: [:create]
+  resources :drinks, only: [:new, :create]
+  get 'choose_drinks', to: 'drinks#choose'
 end
