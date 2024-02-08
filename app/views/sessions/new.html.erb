@@ -13,5 +13,8 @@
   </div>
   <div class="actions">
     <%= submit_tag "ログイン" %>
+    <%= link_to '登録しよ〜', new_user_path, class: "button" %>
   </div>
+  <%= link_to t('.password_forget'), new_password_reset_path %>
+  <%= link_to 'トップ', root_path, class: "button" %>
 <% end %>

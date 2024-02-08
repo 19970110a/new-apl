@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
    # Static Pages
   root 'static_pages#home'
   get 'home', to: 'static_pages#home'
@@ -34,4 +35,5 @@ Rails.application.routes.draw do
   resources :records, only: [:create]
   resources :drinks, only: [:new, :create]
   get 'choose_drinks', to: 'drinks#choose'
+  resources :password_resets, only: %i[new create edit update]
 end
