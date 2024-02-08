@@ -9,6 +9,7 @@ gem "rails", "~> 7.0.8"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 gem 'sorcery'
+gem 'config'
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 
@@ -55,6 +56,7 @@ gem 'webpacker', '~> 5.0'
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
+  gem 'letter_opener_web', '~> 2.0'
 end
 
 group :development do
