@@ -36,4 +36,5 @@ Rails.application.routes.draw do
   resources :drinks, only: [:new, :create]
   get 'choose_drinks', to: 'drinks#choose'
   resources :password_resets, only: %i[new create edit update]
+  resources :contacts, only: [:create]
 end

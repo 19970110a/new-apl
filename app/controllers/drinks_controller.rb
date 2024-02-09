@@ -18,7 +18,7 @@ class DrinksController < ApplicationController
 
 
   def choose
-    @drinks = current_user.drinks
+    @drinks = Drink.where(predefined: true) + current_user.drinks
   end
 
   def increment

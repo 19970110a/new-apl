@@ -5,7 +5,7 @@ skip_before_action :require_login
   end
 
   def contact
-    # お問い合わせページのコード
+    @contact = Contact.new
   end
 
   def privacy_policy
