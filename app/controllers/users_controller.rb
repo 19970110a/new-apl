@@ -1,8 +1,17 @@
 class UsersController < ApplicationController
-    before_action :authenticate_user, only: [:choose_character, :save_character]
+  skip_before_action :require_login, only: [:new, :create]
+  before_action :authenticate_user, only: [:choose_character, :save_character]
 
   def new
     @user = User.new
+  end
+
+  def show
+  # ユーザーが選択したキャラクターのIDを基にキャラクターを取得
+  selected_character = Character.find(session[:selected_character_id])
+  
+  # 選択されたキャラクターに紐付けられたセリフをランダムに取得
+  @random_speech = selected_character.random_speeches.order("RANDOM()").first
   end
 
   def create

@@ -21,6 +21,12 @@
     <div class="speech-bubble">
       <p>お酒を飲もう！</p>
     </div>
+    <div class="character-speech">
+  <%= image_tag("speech.png", alt: "speech bubble", class: "speech-bubble") %>
+  <div class="speech-text">
+    <%= @random_speech.alcohol_speeches if @random_speech.present? %>
+  </div>
+</div>
     <div class="panda-image">
     <% if @character %>
     <div class="selected-character">
@@ -28,7 +34,6 @@
       <p><%= @character.animal %></p>
     </div>
   <% end %>
-      <img src="path_to_panda_image.jpg" alt="パンダ">
     </div>
     <div class="actions">
     <%= link_to '飲むよ！', choose_drink_path, class: 'button' %>

@@ -3,6 +3,7 @@ class HomeController < ApplicationController
 
   def top
     @character = current_user.character
+    @random_speech = RandomSpeech.order("RANDOM()").first
   end
 
   private
