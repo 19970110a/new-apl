@@ -1,5 +1,3 @@
-<h1>Home#top</h1>
-<p>Find me in app/views/home/top.html.erb</p>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -18,26 +16,35 @@
     <div id="progress-bar">
       <!-- 進捗バーの実装 -->
     </div>
-    <div class="speech-bubble">
-      <p>お酒を飲もう！</p>
-    </div>
+    
+    <!-- ここから吹き出しの表示 -->
     <div class="character-speech">
-  <%= image_tag("speech.png", alt: "speech bubble", class: "speech-bubble") %>
-  <div class="speech-text">
-    <%= @random_speech.alcohol_speeches if @random_speech.present? %>
+    <%= image_tag("speech.png", alt: "speech bubble", class: "speech-bubble") %>
+    <div class="speech-text">
+      <% if @speech_text %>
+        <span id="time-to-sober" data-hours="<%= @hours %>" data-minutes="<%= @minutes %>">
+          <%= @speech_text %>
+        </span>
+      <% else %>
+        <%= @random_speech.alcohol_speeches %>
+      <% end %>
+    </div>
   </div>
-</div>
+
+    <!-- ここまで吹き出しの表示 -->
+
     <div class="panda-image">
-    <% if @character %>
-    <div class="selected-character">
-    <%= image_tag(@character.animal.downcase + '.png', alt: @character.animal) %>
-      <p><%= @character.animal %></p>
+      <% if @character %>
+        <div class="selected-character">
+          <%= image_tag(@character.animal.downcase + '.png', alt: @character.animal) %>
+          <p><%= @character.animal %></p>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-    </div>
+
     <div class="actions">
-    <%= link_to '飲むよ！', choose_drink_path, class: 'button' %>
-    <%= link_to "共有！", "https://twitter.com/intent/tweet?text=お好きなテキスト", target: "_blank", class: "button" %>
+      <%= link_to '飲むよ！', choose_drink_path, class: 'button' %>
+      <%= link_to "共有！", "https://twitter.com/intent/tweet?text=お好きなテキスト", target: "_blank", class: "button" %>
     </div>
     <%= button_to 'ログアウト', logout_path, method: :delete, class: 'logout-button' %>
   </main>
@@ -47,7 +54,30 @@
   </footer>
 
   <script>
-    // 必要に応じてJavaScript
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    const timeToSober = document.getElementById('time-to-sober');
+    if (timeToSober) {
+      let hours = parseInt(timeToSober.dataset.hours, 10);
+      let minutes = parseInt(timeToSober.dataset.minutes, 10);
+  
+      const updateTimer = () => {
+        if (minutes > 0 || hours > 0) {
+          if (minutes === 0 && hours > 0) {
+            hours -= 1;
+            minutes = 59;
+          } else {
+            minutes -= 1;
+          }
+          timeToSober.textContent = `あと${hours}時間${minutes}分でアルコールが抜けるよ！`;
+          timeToSober.dataset.hours = hours.toString();
+          timeToSober.dataset.minutes = minutes.toString();
+        }
+      };
+  
+      setInterval(updateTimer, 60000);
+    }
+  });
   </script>
 </body>
 </html>

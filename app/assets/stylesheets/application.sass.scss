@@ -1,1 +1,16 @@
-@import "bootstrap/scss/bootstrap";
+.character-speech {
+  position: relative;
+  display: inline-block; /* または必要に応じて別のディスプレイプロパティ */
+  margin: 20px;
+}
+
+.speech-text {
+  position: absolute;
+  top: 50%; /* 吹き出し画像内のテキストの位置を調整 */
+  left: 50%; /* 吹き出し画像内のテキストの位置を調整 */
+  transform: translate(-50%, -50%); /* テキストを中央に配置 */
+  color: black; /* テキストの色 */
+  font-size: 16px; /* テキストのサイズ */
+  width: 90%; /* 吹き出し内でテキストが占める幅 */
+  text-align: center; /* テキストを中央揃えに */
+}
