@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
-   # Static Pages
+
+  # Static Pages
   root 'static_pages#home'
   get 'home', to: 'static_pages#home'
   get 'contact', to: 'static_pages#contact'
@@ -33,8 +34,15 @@ Rails.application.routes.draw do
   # UserDrinks
   resources :user_drinks, only: [:new, :create]
   resources :records, only: [:create]
-  resources :drinks, only: [:new, :create]
   get 'choose_drinks', to: 'drinks#choose'
   resources :password_resets, only: %i[new create edit update]
   resources :contacts, only: [:create]
+  
+  namespace :admin do
+    # 管理者用のルーティングをここにまとめる
+    get 'login', to: 'sessions#new', as: :login
+    post 'login', to: 'sessions#create'
+    delete 'logout', to: 'sessions#destroy', as: :logout
+    resources :random_speeches, only: [:new, :create]
+  end  
 end
