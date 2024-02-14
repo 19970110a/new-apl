@@ -10,7 +10,6 @@ module Admin
     def create
       @random_speech = RandomSpeech.new(random_speech_params)
       if @random_speech.save
-        # 保存に成功した場合の処理
         redirect_to new_admin_random_speech_path, notice: 'セリフが正常に登録されました。'
       else
         # 保存に失敗した場合の処理

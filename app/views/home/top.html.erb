@@ -20,7 +20,7 @@
     <!-- ここから吹き出しの表示 -->
     <div class="character-speech">
     <%= image_tag("speech.png", alt: "speech bubble", class: "speech-bubble") %>
-    <div class="speech-text">
+    <div class="speech-text" id="speech-text">
       <% if @speech_text %>
         <span id="time-to-sober" data-hours="<%= @hours %>" data-minutes="<%= @minutes %>">
           <%= @speech_text %>
@@ -35,8 +35,8 @@
 
     <div class="panda-image">
       <% if @character %>
-        <div class="selected-character">
-          <%= image_tag(@character.animal.downcase + '.png', alt: @character.animal) %>
+      <div class="selected-character" id="character-image" data-character-id="<%= @character.id %>">
+          <%= image_tag(@character.animal.downcase + '.png', alt: @character.animal, class: "character-img") %>
           <p><%= @character.animal %></p>
         </div>
       <% end %>
@@ -54,13 +54,13 @@
   </footer>
 
   <script>
-  
   document.addEventListener('DOMContentLoaded', () => {
+    // 既存の機能: アルコールが抜けるまでの時間を更新
     const timeToSober = document.getElementById('time-to-sober');
     if (timeToSober) {
       let hours = parseInt(timeToSober.dataset.hours, 10);
       let minutes = parseInt(timeToSober.dataset.minutes, 10);
-  
+
       const updateTimer = () => {
         if (minutes > 0 || hours > 0) {
           if (minutes === 0 && hours > 0) {
@@ -74,8 +74,23 @@
           timeToSober.dataset.minutes = minutes.toString();
         }
       };
-  
+
       setInterval(updateTimer, 60000);
+    }
+
+    // 新しい機能: キャラクター画像をクリックしたときにランダムなセリフを表示
+    const characterImage = document.getElementById('character-image');
+    const speechText = document.getElementById('speech-text');
+    if (characterImage && speechText) {
+      characterImage.addEventListener('click', () => {
+        const characterId = characterImage.getAttribute('data-character-id');
+        fetch(`/api/characters/${characterId}/random_speech`)
+          .then(response => response.json())
+          .then(data => {
+            speechText.textContent = data.speech;
+          })
+          .catch(error => console.error('ランダムセリフの取得エラー:', error));
+      });
     }
   });
   </script>

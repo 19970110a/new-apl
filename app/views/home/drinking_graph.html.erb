@@ -1,3 +1,16 @@
-<h1>飲酒グラフ</h1>
-<!-- グラフを表示するためのコード（グラフライブラリや手書きのJavaScriptを使用する場合があります） -->
-<%= link_to '戻る', top_path, class: "button back-button" %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>飲酒グラフ</title>
+  <%= javascript_include_tag "Chart.bundle" %> <!-- Chartkickに必要なChart.jsを読み込む -->
+  <%= javascript_include_tag "chartkick" %> <!-- ChartkickのJavaScriptを読み込む -->
+</head>
+<body>
+  <h1>飲酒グラフ</h1>
+
+  <!-- Chartkickを使用して棒グラフを表示 -->
+  <%= bar_chart @drink_data, id: "drink-chart", height: "500px" %>
+
+  <%= link_to '戻る', top_path, class: "button back-button" %>
+</body>
+</html>

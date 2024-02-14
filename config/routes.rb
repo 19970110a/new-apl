@@ -42,7 +42,10 @@ Rails.application.routes.draw do
     # 管理者用のルーティングをここにまとめる
     get 'login', to: 'sessions#new', as: :login
     post 'login', to: 'sessions#create'
-    delete 'logout', to: 'sessions#destroy', as: :logout
+    get 'logout', to: 'sessions#destroy', as: :logout
     resources :random_speeches, only: [:new, :create]
   end  
+  namespace :api do
+    get 'characters/:id/random_speech', to: 'characters#random_speech'
+  end
 end
