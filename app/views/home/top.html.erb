@@ -51,45 +51,28 @@
   </footer>
 
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // 既存の機能: アルコールが抜けるまでの時間を更新
-    const timeToSober = document.getElementById('time-to-sober');
-    if (timeToSober) {
-      let hours = parseInt(timeToSober.dataset.hours, 10);
-      let minutes = parseInt(timeToSober.dataset.minutes, 10);
-
-      const updateTimer = () => {
-        if (minutes > 0 || hours > 0) {
-          if (minutes === 0 && hours > 0) {
-            hours -= 1;
-            minutes = 59;
-          } else {
-            minutes -= 1;
-          }
-          timeToSober.textContent = `あと${hours}時間${minutes}分でアルコールが抜けるよ！`;
-          timeToSober.dataset.hours = hours.toString();
-          timeToSober.dataset.minutes = minutes.toString();
+document.addEventListener('DOMContentLoaded', () => {
+  // アルコールが抜けるまでの時間を更新する関数
+  function updateSoberTime() {
+    fetch('/api/sober_time') // サーバーからアルコールが抜ける時間を取得するエンドポイント
+      .then(response => response.json())
+      .then(data => {
+        if (data.hours >= 0 && data.minutes >= 0) {
+          // アルコールが抜けるまでの時間を表示する要素の更新
+          const timeToSober = document.getElementById('time-to-sober');
+          timeToSober.textContent = `あと${data.hours}時間${data.minutes}分でアルコールが抜けるよ！`;
+          timeToSober.dataset.hours = data.hours.toString();
+          timeToSober.dataset.minutes = data.minutes.toString();
         }
-      };
+      })
+      .catch(error => console.error('アルコールが抜ける時間の取得エラー:', error));
+  }
 
-      setInterval(updateTimer, 60000);
-    }
+  // 定期的にアルコールが抜けるまでの時間を更新
+  setInterval(updateSoberTime, 60000); // 1分ごとに更新
 
-    // 新しい機能: キャラクター画像をクリックしたときにランダムなセリフを表示
-    const characterImage = document.getElementById('character-image');
-    const speechText = document.getElementById('speech-text');
-    if (characterImage && speechText) {
-      characterImage.addEventListener('click', () => {
-        const characterId = characterImage.getAttribute('data-character-id');
-        fetch(`/api/characters/${characterId}/random_speech`)
-          .then(response => response.json())
-          .then(data => {
-            speechText.textContent = data.speech;
-          })
-          .catch(error => console.error('ランダムセリフの取得エラー:', error));
-      });
-    }
-  });
-  </script>
+  // その他の既存の機能...
+});
+</script>
 </body>
 </html>

@@ -21,6 +21,9 @@ Rails.application.routes.draw do
   get 'drinking_graph', to: 'home#drinking_graph'
   get 'check_alcohol', to: 'home#check_alcohol'
   get 'home/share', to: 'home#share', as: 'share'
+  namespace :api do
+    get 'sober_time', to: 'some#sober_time'
+  end
 
   # Drinks
   get 'drinks/choose'

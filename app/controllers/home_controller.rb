@@ -1,37 +1,34 @@
 class HomeController < ApplicationController
   before_action :require_login
-  before_action :require_login
 
   def top
     @user = current_user
     if @user
-      # その日の全ての記録を取得し、最新のアルコール分解時間を計算します
       todays_records = @user.records.where('created_at >= ?', Time.zone.now.beginning_of_day)
-      total_alcohol_grams = todays_records.sum(:alcohol_grams)
-      decompose_rate = @user.weight * 0.1
-      hours_to_decompose = total_alcohol_grams / decompose_rate
-  
-      # 現在時刻から分解開始時刻を引いて、既に経過した時間を計算します
       if todays_records.any?
-        time_since_last_drink = Time.current - todays_records.last.created_at
-        elapsed_hours = time_since_last_drink / 1.hour
-        hours_to_decompose -= elapsed_hours
+        total_alcohol_grams = todays_records.sum(:alcohol_grams)
+        decompose_rate = @user.weight * 0.1
+        hours_to_decompose_initial = total_alcohol_grams / decompose_rate
+        
+        # 最初のお酒を飲んでからの経過時間を計算
+        elapsed_hours_since_first_drink = (Time.current - todays_records.first.created_at) / 1.hour
+        
+        # 残りのアルコール分解時間を更新
+        remaining_hours_to_decompose = [hours_to_decompose_initial - elapsed_hours_since_first_drink, 0].max
+        
+        @hours = remaining_hours_to_decompose.floor
+        @minutes = ((remaining_hours_to_decompose - @hours) * 60).round
+      else
+        @hours = 0
+        @minutes = 0
       end
   
-      @hours = hours_to_decompose.floor
-      @minutes = ((hours_to_decompose - @hours) * 60).round
-  
-      if hours_to_decompose > 0
+      if @hours > 0 || @minutes > 0
         @speech_text = "あと#{@hours}時間#{@minutes}分でアルコールが抜けるよ！"
       else
-        # アルコールが抜けた場合、またはお酒を飲んでいない場合はキャラクターIDに基づいたランダムなセリフを表示
         @random_speech = @user.character.random_speeches.order('RANDOM()').first if @user.character
       end
-    else
-      # ユーザーがキャラクターを選択していない場合、全キャラクターからランダムなセリフを選択
-      @random_speech = RandomSpeech.order('RANDOM()').first
     end
-  
     @character = @user.character if @user
   end
   def calculate_decompose_time(record)
@@ -53,6 +50,7 @@ class HomeController < ApplicationController
   private
 
   def calculate_additional_hours(records)
+    # 最後のレコードから現在までの経過時間を計算
     last_record = records.order(created_at: :desc).first
     return 0 unless last_record
 
@@ -61,6 +59,7 @@ class HomeController < ApplicationController
 
     return additional_hours
   end
+
 
 
   def drinking_graph
