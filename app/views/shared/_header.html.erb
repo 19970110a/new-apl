@@ -1,0 +1,9 @@
+<header>
+  <div class="container">
+    <!-- 既存のナビゲーションやロゴ -->
+    <%= link_to 'アルコールチェック', check_alcohol_path, class: "btn btn-primary" %>
+    <%= link_to '飲酒グラフ', drinking_graph_path, class: "btn btn-primary" %>
+    <%= button_to 'ログアウト', logout_path, method: :delete, class: 'logout-button' %>
+    <!-- 他のナビゲーションリンク -->
+  </div>
+</header>

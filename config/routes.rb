@@ -18,9 +18,10 @@ Rails.application.routes.draw do
   # Home
   get 'home/top', as: 'home_top'
   get 'top', to: 'home#top', as: :top
-  get 'drinking_graph', to: 'home#drinking_graph', as: 'drinking_graph'
+  get 'drinking_graph', to: 'home#drinking_graph'
+  get 'check_alcohol', to: 'home#check_alcohol'
   get 'home/share', to: 'home#share', as: 'share'
- 
+
   # Drinks
   get 'drinks/choose'
   get 'choose_drink', to: 'drinks#choose', as: :choose_drink

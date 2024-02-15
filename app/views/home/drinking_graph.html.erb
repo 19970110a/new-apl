@@ -8,9 +8,20 @@
 <body>
   <h1>飲酒グラフ</h1>
 
-  <!-- Chartkickを使用して棒グラフを表示 -->
-  <%= bar_chart @drink_data, id: "drink-chart", height: "500px" %>
+  <!-- Chartkickを使用してカラムチャートを表示 -->
+  <%= column_chart @chart_data, height: '500px', round: 2, suffix: "g", library: {
+    title: {text: 'Daily Alcohol Intake by Grams', x: -20},
+    yAxis: {title: {text: 'Alcohol Grams'}}
+  } %>
 
+  <!-- 総アルコール摂取量の表示 -->
+  <div class="total_alcohol text-center mt-5">
+  <% if @total_alcohol %>
+    <p>今月の純アルコール量<%= @total_alcohol.total_quantity.to_i %>g</p>
+  <% else %>
+    <p>データがありません。</p>
+  <% end %>
+</div>
   <%= link_to '戻る', top_path, class: "button back-button" %>
 </body>
 </html>

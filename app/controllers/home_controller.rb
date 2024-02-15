@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   before_action :require_login
+  before_action :require_login
 
   def top
     @user = current_user
@@ -63,36 +64,53 @@ class HomeController < ApplicationController
 
 
   def drinking_graph
-    return unless current_user
-
-  # タイムゾーンを'Tokyo'に設定して当月の開始日と終了日を取得
-  Time.zone = 'Tokyo'
+    # ユーザーが指定した月のレコードを取得
   start_date = Time.zone.now.beginning_of_month
   end_date = Time.zone.now.end_of_month
+  date_range = (start_date..end_date).to_a
 
-  # ユーザーのレコードを取得し、タイムゾーンを'Tokyo'に設定して日付ごとにグループ化
-  # アルコールグラム数の合計を取得
-  drink_data = current_user.records.where(date: start_date..end_date)
-                                  .group_by_day(:date, range: start_date..end_date, time_zone: Time.zone.name)
-                                  .sum(:alcohol_grams)
+  # 現在のユーザーのレコードを取得し、アルコールの総グラム数を計算
+  drink_records = current_user
+                    .records
+                    .joins(:drink)
+                    .select('records.date, round(sum(records.quantity * drinks.volume * drinks.degree / 100 * 0.8)) AS total_quantity')
+                    .group('records.date')
+                    .where(date: start_date..end_date)
 
-  # Chartkickが空の日付に対しても棒グラフを表示できるように、
-  # 日付の範囲を通してデータを補完する
-  # ここでもタイムゾーンを考慮して日付を生成
-  @drink_data = (start_date..end_date).each_with_object({}) do |date, hash|
-    # dateはTime.zone.nowで生成されたタイムゾーンを意識した日付オブジェクト
-    hash[date] = drink_data[date] || 0
+  daily_data_hash = drink_records.each_with_object(Hash.new(0)) do |record, hash|
+    hash[record.date.strftime('%-m/%-d')] = record.total_quantity
+  @total_alcohol = User
+                   .joins(records: :drink)
+                   .select('users.id, users.name, round(sum(records.quantity * drinks.volume * drinks.degree/100 * 0.8)) AS total_quantity')
+                   .group('users.id')
+                   .where(records: { date: Time.zone.now.beginning_of_month..Time.zone.now.end_of_month, user_id: current_user.id })
+                   .first
   end
+
+  # 日付範囲内の各日付に対してアルコールの総グラム数をマッピング
+  @chart_data = (start_date..end_date).each_with_object({}) do |date, hash|
+    hash[date] = 0
+  end.merge(@chart_data)
+  end
+
+  def check_alcohol
+    @drink_data = current_user.records.group_by_day(:date).sum(:alcohol_grams)
   end
 
   def share
     # 必要なデータを準備する
   end
 
+  private
+
   def require_login
     unless logged_in?
-      redirect_to login_path, alert: 'ログインが必要です。'
+      redirect_to login_url, alert: "ログインが必要です。"
     end
+  end
+
+  def logged_in?
+    !!current_user
   end
   
 end

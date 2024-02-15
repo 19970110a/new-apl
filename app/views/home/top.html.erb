@@ -7,12 +7,10 @@
 </head>
 <body>
   <header>
-    <!-- ヘッダーに含まれる可能性があるナビゲーションやロゴ -->
+  <%= render 'shared/header' %>
   </header>
 
   <main>
-    <h1>進捗度LV.1</h1>
-    <%= link_to '飲酒グラフ', drinking_graph_path, class: 'button' %>
     <div id="progress-bar">
       <!-- 進捗バーの実装 -->
     </div>
@@ -46,11 +44,10 @@
       <%= link_to '飲むよ！', choose_drink_path, class: 'button' %>
       <%= link_to "共有！", "https://twitter.com/intent/tweet?text=お好きなテキスト", target: "_blank", class: "button" %>
     </div>
-    <%= button_to 'ログアウト', logout_path, method: :delete, class: 'logout-button' %>
   </main>
 
   <footer>
-    <!-- フッターに含まれる可能性があるコピーライト情報やリンク -->
+  <%= render 'shared/footer' %>
   </footer>
 
   <script>

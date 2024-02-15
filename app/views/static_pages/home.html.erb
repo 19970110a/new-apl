@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html>
 <head>
   <title>SAKE ZUKI</title>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -7,6 +5,7 @@
 </head>
 <body>
   <div class="container">
+  <%= render 'shared/before_login_header' %>
     <h1>SAKE ZUKI</h1>
     <div class="panda-image">
     </div>
@@ -14,16 +13,9 @@
       <p>お酒を飲もう〜</p>
       <%= image_tag('panda.png', alt: 'パンダ') %>
     </div>
-    <div class="buttons">
-      <%= link_to 'ログインしよ〜', login_path, class: "button" %>
-      <%= link_to '登録しよ〜', new_user_path, class: "button" %>
-    </div>
     <div class="footer">
-      <%= link_to 'お問い合わせ', contact_path %>
-      <%= link_to 'プライバシーポリシー', privacy_policy_path %>
-      <%= link_to '管理者ログイン', admin_login_path, class: "button admin-login" %>
-</div>
-
+    <%= render 'shared/before_login_footer' %>
+    </div>
   </div>
 </body>
 </html>
