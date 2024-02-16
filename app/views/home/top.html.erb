@@ -71,7 +71,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // 定期的にアルコールが抜けるまでの時間を更新
   setInterval(updateSoberTime, 60000); // 1分ごとに更新
 
-  // その他の既存の機能...
+  // 新しい機能: キャラクター画像をクリックしたときにランダムなセリフを表示
+    const characterImage = document.getElementById('character-image');
+    const speechText = document.getElementById('speech-text');
+    if (characterImage && speechText) {
+      characterImage.addEventListener('click', () => {
+        const characterId = characterImage.getAttribute('data-character-id');
+        fetch(`/api/characters/${characterId}/random_speech`)
+          .then(response => response.json())
+          .then(data => {
+            speechText.textContent = data.speech;
+          })
+          .catch(error => console.error('ランダムセリフの取得エラー:', error));
+      });
+    }
 });
 </script>
 </body>

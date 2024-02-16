@@ -4,6 +4,7 @@
     <% @drinks.each do |drink| %>
       <div class="drink-item" id="drink_<%= drink.id %>">
         <div class="drink-details">
+        <%= image_tag(image_filename_for_drink(drink.name), alt: drink.name, class: "drink-image") %>
           <p><%= drink.name %></p>
           <p><%= drink.volume %>ml ・ <%= drink.degree %>%</p>
           <!-- 数量調整UI -->
