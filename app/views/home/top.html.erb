@@ -32,13 +32,13 @@
     <!-- ここまで吹き出しの表示 -->
 
     <div class="panda-image">
-      <% if @character %>
-      <div class="selected-character" id="character-image" data-character-id="<%= @character.id %>">
-          <%= image_tag(@character.animal.downcase + '.png', alt: @character.animal, class: "character-img") %>
-          <p><%= @character.animal %></p>
-        </div>
-      <% end %>
+  <% if @character %>
+    <div class="selected-character" id="character-image" data-character-id="<%= @character.id %>">
+      <!-- 変更箇所: 画像ファイルの選択を @user.character_image に基づいて行います -->
+      <%= image_tag @user.character_image, alt: @user.character.animal, class: "character-img" %>
     </div>
+  <% end %>
+</div>
 
     <div class="actions">
       <%= link_to '飲むよ！', choose_drink_path, class: 'button' %>

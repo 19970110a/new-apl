@@ -52,4 +52,10 @@ Rails.application.routes.draw do
   namespace :api do
     get 'characters/:id/random_speech', to: 'characters#random_speech'
   end
+  resources :records do
+    member do
+      post 'mark_as_hangover'
+    end
+  end
+  post 'records/mark_hangover', to: 'records#mark_hangover', as: :mark_hangover
 end

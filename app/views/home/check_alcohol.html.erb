@@ -1,2 +1,17 @@
-<p>本日のアルコール摂取量は：<%= @todays_alcohol_grams %>グラムです。</p>
-<%= link_to '戻る', top_path, class: "btn btn-secondary" %>
+<p>今日飲んだアルコールのg数: <%= @total_alcohol_grams %>g</p>
+
+<% if @hangover_records.any? %>
+  <h3>二日酔いになった記録</h3>
+  <ul>
+    <% @hangover_records.each do |record| %>
+      <li><%= record.date %>: <%= record.alcohol_grams %>g</li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= link_to '戻る', top_path, class: "button back-button" %>
+<% if @todays_records.any? %>
+  <%= button_to '二日酔いになった', mark_hangover_path(record_id: @todays_records.first.id), method: :post %>
+<% else %>
+  <p>本日のアルコール摂取記録がありません。</p>
+<% end %>

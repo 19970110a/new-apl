@@ -47,7 +47,6 @@ class HomeController < ApplicationController
     # アルコールが抜けるまでの総時間を返す
     return total_hours
   end
-  private
 
   def calculate_additional_hours(records)
     # 最後のレコードから現在までの経過時間を計算
@@ -63,37 +62,28 @@ class HomeController < ApplicationController
 
 
   def drinking_graph
-    # ユーザーが指定した月のレコードを取得
-  start_date = Time.zone.now.beginning_of_month
-  end_date = Time.zone.now.end_of_month
-  date_range = (start_date..end_date).to_a
-
-  # 現在のユーザーのレコードを取得し、アルコールの総グラム数を計算
-  drink_records = current_user
-                    .records
-                    .joins(:drink)
-                    .select('records.date, round(sum(records.quantity * drinks.volume * drinks.degree / 100 * 0.8)) AS total_quantity')
-                    .group('records.date')
-                    .where(date: start_date..end_date)
-
-  daily_data_hash = drink_records.each_with_object(Hash.new(0)) do |record, hash|
-    hash[record.date.strftime('%-m/%-d')] = record.total_quantity
-  @total_alcohol = User
-                   .joins(records: :drink)
-                   .select('users.id, users.name, round(sum(records.quantity * drinks.volume * drinks.degree/100 * 0.8)) AS total_quantity')
-                   .group('users.id')
-                   .where(records: { date: Time.zone.now.beginning_of_month..Time.zone.now.end_of_month, user_id: current_user.id })
-                   .first
+    start_date = Time.zone.now.beginning_of_month.to_date
+    end_date = Time.zone.now.end_of_month.to_date
+  
+    # 現在のユーザーのレコードを取得し、アルコールの総グラム数を計算
+    drink_records = current_user.records.joins(:drink)
+                        .where(date: start_date..end_date)
+                        .group('DATE(records.date)')
+                        .select('DATE(records.date) as date, ROUND(SUM(records.quantity * drinks.volume * drinks.degree / 100 * 0.8)) AS total_quantity')
+  
+    # 1ヶ月分の日付を生成し、各日についてアルコール摂取量があればその値を、なければ0をセット
+    @chart_data = (start_date..end_date).each_with_object({}) do |date, hash|
+      # drink_recordsから一致する日付のレコードを探し、見つかればその総グラム数を、見つからなければ0をセット
+      matching_record = drink_records.find { |r| r.date.to_date == date }
+      hash[date.strftime('%Y-%m-%d')] = matching_record ? matching_record.total_quantity.to_i : 0
+    end
   end
-
-  # 日付範囲内の各日付に対してアルコールの総グラム数をマッピング
-  @chart_data = (start_date..end_date).each_with_object({}) do |date, hash|
-    hash[date] = 0
-  end.merge(@chart_data)
-  end
-
   def check_alcohol
-    @drink_data = current_user.records.group_by_day(:date).sum(:alcohol_grams)
+    @todays_records = current_user.records.where(date: Date.today)
+    @total_alcohol_grams = @todays_records.sum(:alcohol_grams)
+    
+    # 二日酔いになった全記録を取得
+    @hangover_records = current_user.records.where(hangover: true).order(date: :desc)
   end
 
   def share

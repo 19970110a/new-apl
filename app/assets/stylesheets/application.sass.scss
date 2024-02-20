@@ -14,3 +14,18 @@
   width: 90%; /* 吹き出し内でテキストが占める幅 */
   text-align: center; /* テキストを中央揃えに */
 }
+
+.animal-image {
+  background-image: url('/assets/animal.png'); /* 背景画像としてanimal.pngを設定 */
+  background-size: cover; /* 画像がコンテナを完全に覆うように調整 */
+  height: 1280px; /* 適切な高さを設定 */
+  width: 100%; /* コンテナの幅に合わせて調整 */
+}
+
+.notice {
+  color: green;
+}
+
+.alert {
+  color: red;
+}

@@ -1,5 +1,6 @@
 class RecordsController < ApplicationController
-  def create
+    before_action :require_login
+    def create
   params[:records].each do |drink_id, record_param|
     quantity = record_param[:quantity].to_i
     next if quantity < 1 # 数量が1未満のものはスキップ
@@ -13,6 +14,25 @@ class RecordsController < ApplicationController
   end
   redirect_to home_top_path, notice: '記録が保存されました。'
   end
+
+  def mark_hangover
+    # 昨日のアルコール摂取記録を検索
+    yesterday_records = current_user.records.where(date: Date.yesterday)
+  
+    # 昨日の記録があるかどうかをチェック
+    if yesterday_records.any?
+      # 昨日の記録がある場合は、それらを二日酔いとしてマーク
+      yesterday_records.update_all(hangover: true)
+      flash[:notice] = "昨日のアルコール摂取量を二日酔いとして記録しました。"
+    else
+      # 昨日の記録がない場合は、フラッシュメッセージを設定
+      flash[:alert] = "昨日のアルコール摂取記録がありません。"
+    end
+  
+    redirect_to check_alcohol_path
+  end
+
+
 private
 
 def record_params
