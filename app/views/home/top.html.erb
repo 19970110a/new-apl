@@ -2,7 +2,6 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>親密度LV.1</title>
   <!-- スタイルシートのリンクやその他のメタタグをここに挿入 -->
 </head>
 <body>
@@ -12,7 +11,22 @@
 
   <main>
     <div id="progress-bar">
-      <!-- 進捗バーの実装 -->
+    <% if @current_level && @current_level < 4 %>
+    <p>次のレベルまであと<%= @remaining %>g</p>
+  <% elsif @current_level == 4 %>
+    <p>最高レベルに到達しました！</p>
+  <% end %>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <div class="progress">
+  <div class="progress-bar" role="progressbar" style="width: <%= @current_percentage %>%;" aria-valuenow="<%= @current_percentage %>" aria-valuemin="0" aria-valuemax="100">
+    <%= @current_percentage %>% 完了
+  </div>
+</div>
+</div>
+
+<div class="progress">
+  <div class="progress-bar" role="progressbar" style="width: <%= @current_percentage %>%;" aria-valuenow="<%= @current_percentage %>" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
     </div>
     
     <!-- ここから吹き出しの表示 -->
@@ -32,13 +46,13 @@
     <!-- ここまで吹き出しの表示 -->
 
     <div class="panda-image">
-      <% if @character %>
-      <div class="selected-character" id="character-image" data-character-id="<%= @character.id %>">
-          <%= image_tag(@character.animal.downcase + '.png', alt: @character.animal, class: "character-img") %>
-          <p><%= @character.animal %></p>
-        </div>
-      <% end %>
+  <% if @character %>
+    <div class="selected-character" id="character-image" data-character-id="<%= @character.id %>">
+      <!-- 変更箇所: 画像ファイルの選択を @user.character_image に基づいて行います -->
+      <%= image_tag @user.character_image, alt: @user.character.animal, class: "character-img" %>
     </div>
+  <% end %>
+</div>
 
     <div class="actions">
       <%= link_to '飲むよ！', choose_drink_path, class: 'button' %>

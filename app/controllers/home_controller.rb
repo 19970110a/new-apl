@@ -4,6 +4,7 @@ class HomeController < ApplicationController
   def top
     @user = current_user
     if @user
+      calculate_intimacy
       todays_records = @user.records.where('created_at >= ?', Time.zone.now.beginning_of_day)
       if todays_records.any?
         total_alcohol_grams = todays_records.sum(:alcohol_grams)
@@ -47,7 +48,6 @@ class HomeController < ApplicationController
     # アルコールが抜けるまでの総時間を返す
     return total_hours
   end
-  private
 
   def calculate_additional_hours(records)
     # 最後のレコードから現在までの経過時間を計算
@@ -63,41 +63,58 @@ class HomeController < ApplicationController
 
 
   def drinking_graph
-    # ユーザーが指定した月のレコードを取得
-  start_date = Time.zone.now.beginning_of_month
-  end_date = Time.zone.now.end_of_month
-  date_range = (start_date..end_date).to_a
-
-  # 現在のユーザーのレコードを取得し、アルコールの総グラム数を計算
-  drink_records = current_user
-                    .records
-                    .joins(:drink)
-                    .select('records.date, round(sum(records.quantity * drinks.volume * drinks.degree / 100 * 0.8)) AS total_quantity')
-                    .group('records.date')
-                    .where(date: start_date..end_date)
-
-  daily_data_hash = drink_records.each_with_object(Hash.new(0)) do |record, hash|
-    hash[record.date.strftime('%-m/%-d')] = record.total_quantity
-  @total_alcohol = User
-                   .joins(records: :drink)
-                   .select('users.id, users.name, round(sum(records.quantity * drinks.volume * drinks.degree/100 * 0.8)) AS total_quantity')
-                   .group('users.id')
-                   .where(records: { date: Time.zone.now.beginning_of_month..Time.zone.now.end_of_month, user_id: current_user.id })
-                   .first
+    start_date = Time.zone.now.beginning_of_month.to_date
+    end_date = Time.zone.now.end_of_month.to_date
+  
+    # 現在のユーザーのレコードを取得し、アルコールの総グラム数を計算
+    drink_records = current_user.records.joins(:drink)
+                        .where(date: start_date..end_date)
+                        .group('DATE(records.date)')
+                        .select('DATE(records.date) as date, ROUND(SUM(records.quantity * drinks.volume * drinks.degree / 100 * 0.8)) AS total_quantity')
+  
+    # 1ヶ月分の日付を生成し、各日についてアルコール摂取量があればその値を、なければ0をセット
+    @chart_data = (start_date..end_date).each_with_object({}) do |date, hash|
+      # drink_recordsから一致する日付のレコードを探し、見つかればその総グラム数を、見つからなければ0をセット
+      matching_record = drink_records.find { |r| r.date.to_date == date }
+      hash[date.strftime('%Y-%m-%d')] = matching_record ? matching_record.total_quantity.to_i : 0
+    end
   end
-
-  # 日付範囲内の各日付に対してアルコールの総グラム数をマッピング
-  @chart_data = (start_date..end_date).each_with_object({}) do |date, hash|
-    hash[date] = 0
-  end.merge(@chart_data)
-  end
-
   def check_alcohol
-    @drink_data = current_user.records.group_by_day(:date).sum(:alcohol_grams)
+    @todays_records = current_user.records.where(date: Date.today)
+    @total_alcohol_grams = @todays_records.sum(:alcohol_grams)
+    
+    # 二日酔いになった全記録を取得
+    @hangover_records = current_user.records.where(hangover: true).order(date: :desc)
   end
 
   def share
     # 必要なデータを準備する
+  end
+
+  def calculate_intimacy
+    total_alcohol_grams = @user.records.sum(:alcohol_grams)
+    @current_level, level_threshold = case total_alcohol_grams
+                                      when 0..30
+                                        [1, 30]
+                                      when 31..60
+                                        [2, 60]
+                                      when 61..90
+                                        [3, 90]
+                                      else
+                                        [4, nil] # レベルMAXに達している場合
+                                      end
+    @current_level ||= 1  # @current
+    # 次のレベルに必要な量や進捗の割合を計算
+    if level_threshold
+      @remaining = level_threshold - total_alcohol_grams + 1
+      @current_percentage = (total_alcohol_grams.to_f / level_threshold * 100).round(2)
+    else
+      @remaining = 0 # レベルMAXの場合
+      @current_percentage = 100
+    end
+  
+    # レベルの表示名を設定
+    @level_name = @current_level < 4 ? "酒度レベル#{@current_level}" : "酒度レベルMAX"
   end
 
   private

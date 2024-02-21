@@ -15,12 +15,12 @@
   } %>
 
   <!-- 総アルコール摂取量の表示 -->
-  <div class="total_alcohol text-center mt-5">
-  <% if @total_alcohol %>
-    <p>今月の純アルコール量<%= @total_alcohol.total_quantity.to_i %>g</p>
-  <% else %>
-    <p>データがありません。</p>
-  <% end %>
+<div class="total_alcohol text-center mt-5">
+<% if @chart_data.values.sum == 0 %>
+<div class="total_alcohol text-center mt-5">
+  <p>データがありません。</p>
+</div>
+<% end %>
 </div>
   <%= link_to '戻る', top_path, class: "button back-button" %>
 </body>

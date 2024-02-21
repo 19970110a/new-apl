@@ -1,29 +1,33 @@
-<%= form_with model: @contact, url: contacts_path, local: true do |form| %>
-    <div class="contact-form">
-      <h2>SAKE ZUKI</h2>
-      <p>お問い合わせフォーム</p>
-  
-      <div class="field">
-        <%= form.label :name, "名前" %>
-        <%= form.text_field :name, placeholder: "デキストを追加" %>
-      </div>
-  
-      <div class="field">
-        <%= form.label :email, "メール" %>
-        <%= form.email_field :email, placeholder: "name@example.com" %>
-      </div>
-  
-      <div class="field">
-        <%= form.label :message, "内容" %>
-        <%= form.text_area :message, placeholder: "こちらにお問い合わせ内容をご記入ください" %>
-      </div>
-  
-      <div class="actions">
-        <%= form.submit "送信", class: "submit-button" %>
-      </div>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <%= form_with model: @contact, url: contacts_path, local: true, class: "contact-form p-4 border rounded-3 bg-light" do |form| %>
+        <h2 class="text-center mb-4">SAKE ZUKI</h2>
+        <p class="text-center">お問い合わせフォーム</p>
+    
+        <div class="mb-3">
+          <%= form.label :name, "名前", class: "form-label" %>
+          <%= form.text_field :name, placeholder: "お名前を入力してください", class: "form-control" %>
+        </div>
+    
+        <div class="mb-3">
+          <%= form.label :email, "メール", class: "form-label" %>
+          <%= form.email_field :email, placeholder: "name@example.com", class: "form-control" %>
+        </div>
+    
+        <div class="mb-3">
+          <%= form.label :message, "内容", class: "form-label" %>
+          <%= form.text_area :message, placeholder: "こちらにお問い合わせ内容をご記入ください", class: "form-control", rows: "5" %>
+        </div>
+    
+        <div class="text-center">
+          <%= form.submit "送信", class: "btn btn-primary" %>
+        </div>
 
-      <div class="top-button">
-      <%= link_to 'トップ', root_path, class: "button" %>
-      </div>
+        <div class="text-center mt-3">
+          <%= link_to 'トップへ戻る', root_path, class: "btn btn-secondary" %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+  </div>
+</div>
