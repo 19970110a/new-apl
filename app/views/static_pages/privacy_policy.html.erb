@@ -1,4 +1,5 @@
-<!-- app/views/pages/privacy.html.erb -->
+
+<%= render 'shared/before_login_header' %>
 <h1>プライバシーポリシー</h1>
 <h1>お客様から取得する情報
 当社は、お客様から以下の情報を取得します。
@@ -36,6 +37,9 @@ e-mail
 事業者の氏名
 秋元　亮太郎
 2024年01月16日 制定</h1>
+<div class="footer bg-info text-white text-center py-3">
+    <%= render 'shared/before_login_footer' %>
+  </div>
 <div class="top-button">
   <%= link_to 'トップ', root_path, class: "button" %>
 </div>

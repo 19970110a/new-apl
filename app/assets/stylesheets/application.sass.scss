@@ -15,12 +15,6 @@
   text-align: center; /* テキストを中央揃えに */
 }
 
-.animal-image {
-  background-image: url('/assets/animal.png'); /* 背景画像としてanimal.pngを設定 */
-  background-size: cover; /* 画像がコンテナを完全に覆うように調整 */
-  height: 1280px; /* 適切な高さを設定 */
-  width: 100%; /* コンテナの幅に合わせて調整 */
-}
 
 .notice {
   color: green;
@@ -28,4 +22,23 @@
 
 .alert {
   color: red;
+}
+
+.dotgothic16-regular {
+  font-family: "DotGothic16", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: 'DotGothic16', sans-serif;
+}
+
+.contact-form {
+  font-family: 'DotGothic16', sans-serif;
+}
+
+.custom-form-container {
+  max-width: 600px; /* 最大幅を600pxに設定。必要に応じて調整してください。 */
+  margin: 0 auto; /* 左右のマージンを自動に設定して中央揃えにします。 */
 }

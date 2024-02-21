@@ -1,17 +1,27 @@
+<!DOCTYPE html>
+<html>
 <head>
   <title>SAKE ZUKI</title>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
 </head>
 <body>
-  <div class="container">
   <%= render 'shared/before_login_header' %>
-    <h1>SAKE ZUKI</h1>
-    <div class="animal-image">
+
+  <div class="animal-image d-flex flex-column justify-content-center align-items-center text-center" style="min-height: 100vh; background-image: url(<%= asset_url('animal.png') %>); background-size: cover; background-position: center;">
+    <h1 class="page-title text-dark mb-4">SAKE ZUKI</h1>
+    <div class="auth-buttons">
+      <%= link_to 'ログイン', login_path, class: "btn btn-primary me-2" %>
+      <%= link_to '登録', new_user_path, class: "btn btn-secondary" %>
     </div>
-    <div class="footer">
+    <div class="app-description px-4 py-3" style="background-color: rgba(255,255,255,0.9); border-radius: 15px;">
+      <p class="text-dark m-0">お酒を飲んだ時のアルコールが抜けるまでの時間を教えてくれるよ！</p>
+      <p class="text-dark m-0">二日酔いになったら、二日酔いになるまでのアルコール量を教えてくれるよ！</p>
+    </div>
+  </div>
+
+  <div class="footer bg-info text-white text-center py-3">
     <%= render 'shared/before_login_footer' %>
-    </div>
   </div>
 </body>
 </html>

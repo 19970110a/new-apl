@@ -4,6 +4,7 @@ class HomeController < ApplicationController
   def top
     @user = current_user
     if @user
+      calculate_intimacy
       todays_records = @user.records.where('created_at >= ?', Time.zone.now.beginning_of_day)
       if todays_records.any?
         total_alcohol_grams = todays_records.sum(:alcohol_grams)
@@ -88,6 +89,32 @@ class HomeController < ApplicationController
 
   def share
     # 必要なデータを準備する
+  end
+
+  def calculate_intimacy
+    total_alcohol_grams = @user.records.sum(:alcohol_grams)
+    @current_level, level_threshold = case total_alcohol_grams
+                                      when 0..30
+                                        [1, 30]
+                                      when 31..60
+                                        [2, 60]
+                                      when 61..90
+                                        [3, 90]
+                                      else
+                                        [4, nil] # レベルMAXに達している場合
+                                      end
+    @current_level ||= 1  # @current
+    # 次のレベルに必要な量や進捗の割合を計算
+    if level_threshold
+      @remaining = level_threshold - total_alcohol_grams + 1
+      @current_percentage = (total_alcohol_grams.to_f / level_threshold * 100).round(2)
+    else
+      @remaining = 0 # レベルMAXの場合
+      @current_percentage = 100
+    end
+  
+    # レベルの表示名を設定
+    @level_name = @current_level < 4 ? "酒度レベル#{@current_level}" : "酒度レベルMAX"
   end
 
   private

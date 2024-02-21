@@ -1,4 +1,14 @@
-<div class="header-links">
-  <%= link_to 'ログインしよ〜', login_path, class: "button" %>
-  <%= link_to '登録しよ〜', new_user_path, class: "button" %>
-</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-info fixed-top">
+  <div class="container-fluid">
+    <!-- アプリアイコンを小さくして左側に配置 -->
+    <%= link_to root_path, class: "navbar-brand" do %>
+      <%= image_tag "app_icon.png", alt: "アプリアイコン", class: "app-icon", style: "height: 30px; width: auto;" %>
+    <% end %>
+
+    <!-- 右側にログインと登録ボタンを配置 -->
+    <div class="ms-auto">
+      <%= link_to 'ログイン', login_path, class: "btn btn-outline-primary me-2" %>
+      <%= link_to '登録', new_user_path, class: "btn btn-outline-success" %>
+    </div>
+  </div>
+</nav>
