@@ -1,58 +1,84 @@
-<%= render 'shared/before_login_header' %>
-<div class="custom-form-container">
-<%= form_for @user, html: { class: 'needs-validation', novalidate: true } do |f| %>
-  <% if @user.errors.any? %>
-    <div class="alert alert-danger" role="alert">
-      <h4 class="alert-heading"><%= pluralize(@user.errors.count, "エラー") %>があります:</h4>
-      <ul>
-        <% @user.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ユーザー登録</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <style>
+  html, body {
+    height: 100%;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+  
+</style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <%= render 'shared/before_login_header' %>
+
+  <div class="container flex-grow-1 mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <%= form_for @user, html: { class: 'needs-validation', novalidate: true } do |f| %>
+          <% if @user.errors.any? %>
+            <div class="alert alert-danger" role="alert">
+              <h4 class="alert-heading"><%= pluralize(@user.errors.count, "エラー") %>があります:</h4>
+              <ul>
+                <% @user.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= f.label :username, "ユーザー名" %>
+            <%= f.text_field :username, class: 'form-control' %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :email, "メールアドレス" %>
+            <%= f.email_field :email, class: 'form-control' %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :password, "パスワード" %>
+            <%= f.password_field :password, class: 'form-control' %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :password_confirmation, "パスワード確認" %>
+            <%= f.password_field :password_confirmation, class: 'form-control' %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :weight, "体重" %>
+            <%= f.number_field :weight, class: 'form-control' %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :character_id, "キャラクター選択" %>
+            <div class="row">
+              <% characters = [[1, 'panda.png', 'パンダ'], [2, 'gorilla.png', 'ゴリラ'], [3, 'crocodile.png', 'ワニ'], [4, 'bear.png', 'クマ']] %>
+              <% characters.each do |id, image, name| %>
+                <div class="col-3 text-center">
+                  <%= f.radio_button :character_id, id, class: 'form-check-input', id: "character_#{id}" %>
+                  <%= label_tag "character_#{id}", image_tag(image, alt: name, class: 'img-fluid', style: 'max-height: 110px;') %>
+                  <label for="character_<%= id %>"><%= name %></label>
+                </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <%= f.submit "登録", class: 'btn btn-primary' %>
+          </div>
         <% end %>
-      </ul>
-    </div>
-  <% end %>
-  </div>
-
-  <div class="mb-3">
-    <%= f.label :username, "ユーザー名" %>
-    <%= f.text_field :username, class: 'form-control' %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :email, "メールアドレス" %>
-    <%= f.email_field :email, class: 'form-control' %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :password, "パスワード" %>
-    <%= f.password_field :password, class: 'form-control' %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :password_confirmation, "パスワード確認" %>
-    <%= f.password_field :password_confirmation, class: 'form-control' %>
-  </div>
-  <div class="mb-3">
-    <%= f.label :weight, "体重" %>
-    <%= f.number_field :weight, class: 'form-control' %>
-  </div>
-
-  <div class="mb-3">
-    <%= f.label :character_id, "キャラクター選択" %>
-    <div class="row">
-      <% # 仮のキャラクター情報 - 実際の情報に合わせてください %>
-      <% characters = [[1, 'panda.png', 'パンダ'], [2, 'gorilla.png', 'ゴリラ'], [3, 'crocodile.png', 'クロコダイル'], [4, 'bear.png', 'クマ']] %>
-      <% characters.each do |id, image, name| %>
-        <div class="col-3 text-center">
-          <%= f.radio_button :character_id, id, class: 'form-check-input', id: "character_#{id}" %>
-          <%= label_tag "character_#{id}", image_tag(image, alt: name, class: 'img-fluid', style: 'max-height: 100px;') %>
-          <label for="character_<%= id %>"><%= name %></label>
-        </div>
-      <% end %>
+      </div>
     </div>
   </div>
 
-  <div class="text-center">
-    <%= f.submit "登録", class: 'btn btn-primary' %>
-  </div>
-  <div class="footer bg-info text-white text-center py-3">
+  <div class="footer bg-info text-white text-center py-3 mt-auto">
     <%= render 'shared/before_login_footer' %>
   </div>
-<% end %>
+</body>
+</html>
