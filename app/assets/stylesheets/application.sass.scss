@@ -24,21 +24,17 @@
   color: red;
 }
 
-.dotgothic16-regular {
-  font-family: "DotGothic16", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-body {
+body, button, input, textarea {
   font-family: 'DotGothic16', sans-serif;
 }
-
-.contact-form {
-  font-family: 'DotGothic16', sans-serif;
+.body-background {
+  background-image: url('/assets/animal.png'); /* このパスはプリコンパイル後のパスに依存します */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-
-.custom-form-container {
-  max-width: 600px; /* 最大幅を600pxに設定。必要に応じて調整してください。 */
-  margin: 0 auto; /* 左右のマージンを自動に設定して中央揃えにします。 */
+@media (max-width: 768px) {
+  .body-background {
+    background-image: asset-url('animal1.png'); /* Sassの場合 */
+  }
 }
