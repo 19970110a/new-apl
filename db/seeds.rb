@@ -28,3 +28,45 @@ Drink.create!([
   { name: "日本酒", degree: 15, volume: 180, category_id: 5, predefined: true },
   { name: "ワイン", degree: 15, volume: 125, category_id: 6, predefined: true }
 ])
+panda = Character.find_by(animal: "panda")
+if panda
+  RandomSpeech.create!(
+    character_id: panda.id,
+    alcohol_speeches: "お酒が一番！",
+    random_speeches: "お酒を飲もうよ！"
+  )
+end
+gorilla = Character.find_by(animal: "gorilla")
+if gorilla
+  RandomSpeech.create!(
+    character_id: gorilla.id,
+    alcohol_speeches: "お酒が一番！",
+    random_speeches: "お酒を飲もうよ！"
+  )
+end
+crocodile = Character.find_by(animal: "crocodile")
+if crocodile
+  RandomSpeech.create!(
+    character_id: crocodile.id,
+    alcohol_speeches: "お酒が一番！",
+    random_speeches: "お酒を飲もうよ！"
+  )
+end
+bear = Character.find_by(animal: "bear")
+if bear
+  RandomSpeech.create!(
+    character_id: bear.id,
+    alcohol_speeches: "お酒が一番！",
+    random_speeches: "お酒を飲もうよ！"
+  )
+end
+if User.find_by(email: 'admin@example.com').nil?
+  User.create!(
+    username: 'admin',
+    email: 'admin@example.com',
+    password: 'securepassword',
+    password_confirmation: 'securepassword',
+    admin: true,
+    weight: 60  
+  )
+end

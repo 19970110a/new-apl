@@ -1,0 +1,18 @@
+<%= form_with(model: [@random_speech], url: admin_random_speeches_path, local: true) do |form| %>
+  <div>
+    <%= form.label :character_id, 'キャラクター' %>
+    <%= form.collection_select :character_id, @characters, :id, :animal, prompt: '選択してください' %>
+  </div>
+  <div>
+    <%= form.label :alcohol_speeches, 'アルコールセリフ' %>
+    <%= form.text_field :alcohol_speeches %>
+  </div>
+  <div>
+    <%= form.label :random_speeches, 'ランダムセリフ' %>
+    <%= form.text_field :random_speeches %>
+  </div>
+  <div>
+    <%= form.submit '保存' %>
+  </div>
+  <%= link_to 'ログアウト', admin_logout_path, method: :delete, data: { turbo: false } %>
+<% end %>

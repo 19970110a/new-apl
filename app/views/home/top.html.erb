@@ -1,5 +1,3 @@
-<h1>Home#top</h1>
-<p>Find me in app/views/home/top.html.erb</p>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -9,45 +7,85 @@
 </head>
 <body>
   <header>
-    <!-- ヘッダーに含まれる可能性があるナビゲーションやロゴ -->
+  <%= render 'shared/header' %>
   </header>
 
   <main>
-    <h1>進捗度LV.1</h1>
-    <%= link_to '飲酒グラフ', drinking_graph_path, class: 'button' %>
     <div id="progress-bar">
       <!-- 進捗バーの実装 -->
     </div>
-    <div class="speech-bubble">
-      <p>お酒を飲もう！</p>
-    </div>
+    
+    <!-- ここから吹き出しの表示 -->
     <div class="character-speech">
-  <%= image_tag("speech.png", alt: "speech bubble", class: "speech-bubble") %>
-  <div class="speech-text">
-    <%= @random_speech.alcohol_speeches if @random_speech.present? %>
+    <%= image_tag("speech.png", alt: "speech bubble", class: "speech-bubble") %>
+    <div class="speech-text" id="speech-text">
+      <% if @speech_text %>
+        <span id="time-to-sober" data-hours="<%= @hours %>" data-minutes="<%= @minutes %>">
+          <%= @speech_text %>
+        </span>
+      <% else %>
+        <%= @random_speech.alcohol_speeches %>
+      <% end %>
+    </div>
   </div>
-</div>
+
+    <!-- ここまで吹き出しの表示 -->
+
     <div class="panda-image">
-    <% if @character %>
-    <div class="selected-character">
-    <%= image_tag(@character.animal.downcase + '.png', alt: @character.animal) %>
-      <p><%= @character.animal %></p>
+      <% if @character %>
+      <div class="selected-character" id="character-image" data-character-id="<%= @character.id %>">
+          <%= image_tag(@character.animal.downcase + '.png', alt: @character.animal, class: "character-img") %>
+          <p><%= @character.animal %></p>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-    </div>
+
     <div class="actions">
-    <%= link_to '飲むよ！', choose_drink_path, class: 'button' %>
-    <%= link_to "共有！", "https://twitter.com/intent/tweet?text=お好きなテキスト", target: "_blank", class: "button" %>
+      <%= link_to '飲むよ！', choose_drink_path, class: 'button' %>
+      <%= link_to "共有！", "https://twitter.com/intent/tweet?text=お好きなテキスト", target: "_blank", class: "button" %>
     </div>
-    <%= button_to 'ログアウト', logout_path, method: :delete, class: 'logout-button' %>
   </main>
 
   <footer>
-    <!-- フッターに含まれる可能性があるコピーライト情報やリンク -->
+  <%= render 'shared/footer' %>
   </footer>
 
   <script>
-    // 必要に応じてJavaScript
-  </script>
+document.addEventListener('DOMContentLoaded', () => {
+  // アルコールが抜けるまでの時間を更新する関数
+  function updateSoberTime() {
+    fetch('/api/sober_time') // サーバーからアルコールが抜ける時間を取得するエンドポイント
+      .then(response => response.json())
+      .then(data => {
+        if (data.hours >= 0 && data.minutes >= 0) {
+          // アルコールが抜けるまでの時間を表示する要素の更新
+          const timeToSober = document.getElementById('time-to-sober');
+          timeToSober.textContent = `あと${data.hours}時間${data.minutes}分でアルコールが抜けるよ！`;
+          timeToSober.dataset.hours = data.hours.toString();
+          timeToSober.dataset.minutes = data.minutes.toString();
+        }
+      })
+      .catch(error => console.error('アルコールが抜ける時間の取得エラー:', error));
+  }
+
+  // 定期的にアルコールが抜けるまでの時間を更新
+  setInterval(updateSoberTime, 60000); // 1分ごとに更新
+
+  // 新しい機能: キャラクター画像をクリックしたときにランダムなセリフを表示
+    const characterImage = document.getElementById('character-image');
+    const speechText = document.getElementById('speech-text');
+    if (characterImage && speechText) {
+      characterImage.addEventListener('click', () => {
+        const characterId = characterImage.getAttribute('data-character-id');
+        fetch(`/api/characters/${characterId}/random_speech`)
+          .then(response => response.json())
+          .then(data => {
+            speechText.textContent = data.speech;
+          })
+          .catch(error => console.error('ランダムセリフの取得エラー:', error));
+      });
+    }
+});
+</script>
 </body>
 </html>

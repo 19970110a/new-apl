@@ -1,3 +1,27 @@
-<h1>飲酒グラフ</h1>
-<!-- グラフを表示するためのコード（グラフライブラリや手書きのJavaScriptを使用する場合があります） -->
-<%= link_to '戻る', top_path, class: "button back-button" %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>飲酒グラフ</title>
+  <%= javascript_include_tag "Chart.bundle" %> <!-- Chartkickに必要なChart.jsを読み込む -->
+  <%= javascript_include_tag "chartkick" %> <!-- ChartkickのJavaScriptを読み込む -->
+</head>
+<body>
+  <h1>飲酒グラフ</h1>
+
+  <!-- Chartkickを使用してカラムチャートを表示 -->
+  <%= column_chart @chart_data, height: '500px', round: 2, suffix: "g", library: {
+    title: {text: 'Daily Alcohol Intake by Grams', x: -20},
+    yAxis: {title: {text: 'Alcohol Grams'}}
+  } %>
+
+  <!-- 総アルコール摂取量の表示 -->
+  <div class="total_alcohol text-center mt-5">
+  <% if @total_alcohol %>
+    <p>今月の純アルコール量<%= @total_alcohol.total_quantity.to_i %>g</p>
+  <% else %>
+    <p>データがありません。</p>
+  <% end %>
+</div>
+  <%= link_to '戻る', top_path, class: "button back-button" %>
+</body>
+</html>

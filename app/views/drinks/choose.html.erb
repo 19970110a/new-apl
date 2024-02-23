@@ -1,15 +1,32 @@
 <h1>お酒を選ぼう！</h1>
-
 <div class="drink-list">
-  <% @drinks.each do |drink| %>
-    <div class="drink-item" id="drink_<%= drink.id %>">
-      <div class="drink-details">
-        <p><%= drink.name %></p>
-        <p><%= drink.volume %>ml ・ <%= drink.degree %>%</p>
-        <%= button_to '飲む', records_path(drink_id: drink.id, quantity: 1), method: :post, class: 'drink-button', data: { turbo: false } %>
+  <%= form_tag(records_path, method: :post) do %>
+    <% @drinks.each do |drink| %>
+      <div class="drink-item" id="drink_<%= drink.id %>">
+        <div class="drink-details">
+        <%= image_tag(image_filename_for_drink(drink.name), alt: drink.name, class: "drink-image") %>
+          <p><%= drink.name %></p>
+          <p><%= drink.volume %>ml ・ <%= drink.degree %>%</p>
+          <!-- 数量調整UI -->
+          <div class="quantity-controls">
+            <button type="button" onclick="changeQuantity('<%= drink.id %>', -1)">-</button>
+            <input type="text" name="records[<%= drink.id %>][quantity]" id="quantity_<%= drink.id %>" value="0" class="quantity-input">
+            <button type="button" onclick="changeQuantity('<%= drink.id %>', 1)">+</button>
+          </div>
+        </div>
       </div>
-    </div>
+    <% end %>
+    <%= submit_tag '選択したお酒を登録する', class: 'button register-button' %>
   <% end %>
   <%= link_to '作ったお酒を登録する！', new_drink_path, class: "button register-button" %>
   <%= link_to '戻る', top_path, class: "button back-button" %>
 </div>
+<script>
+function changeQuantity(drinkId, change) {
+  var quantityInput = document.getElementById('quantity_' + drinkId);
+  var currentQuantity = parseInt(quantityInput.value);
+  var newQuantity = currentQuantity + change;
+  if (newQuantity < 1) newQuantity = 1; // 数量が1未満にならないように
+  quantityInput.value = newQuantity;
+}
+</script>

@@ -1,0 +1,16 @@
+<h1>管理者ログイン</h1>
+
+<%= form_with url: admin_login_path, scope: :session, data: { turbo: false } do |f| %>
+  <div>
+    <%= f.label :email %>
+    <%= f.email_field :email, required: true %>
+  </div>
+  <div>
+    <%= f.label :password %>
+    <%= f.password_field :password, required: true %>
+  </div>
+  <div>
+    <%= f.submit "ログイン" %>
+    <%= link_to 'トップ', root_path, class: "button" %>
+  </div>
+<% end %>
