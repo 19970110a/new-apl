@@ -1,6 +1,7 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-8">
+    <%= render 'shared/before_login_header' %>
       <%= form_with model: @contact, url: contacts_path, local: true, class: "contact-form p-4 border rounded-3 bg-light" do |form| %>
         <h2 class="text-center mb-4">SAKE ZUKI</h2>
         <p class="text-center">お問い合わせフォーム</p>
@@ -41,3 +42,6 @@
     </div>
   </div>
 </div>
+<footer class="mt-auto">
+    <%= render 'shared/footer' %>
+  </footer>
