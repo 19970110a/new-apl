@@ -5,29 +5,33 @@
 #
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
-Category.create!([
-  { name: "ビール" },
-  { name: "サワー" },
-  { name: "ハイボール" },
-  { name: "焼酎" },
-  { name: "日本酒" },
-  { name: "ワイン" },
-  { name: "その他" }
-])
+["ビール", "サワー", "ハイボール", "焼酎", "日本酒", "ワイン", "その他"].each do |name|
+    Category.find_or_create_by(name: name)
+  end
+  
 Character.create!([
   { animal: "panda" },
   { animal: "gorilla" },
   { animal: "crocodile" },
   { animal: "bear" }
 ])
-Drink.create!([
+drinks = [
   { name: "ビール", degree: 6, volume: 350, category_id: 1, predefined: true },
   { name: "サワー", degree: 6, volume: 350, category_id: 2, predefined: true },
   { name: "ハイボール", degree: 6, volume: 350, category_id: 3, predefined: true },
   { name: "焼酎", degree: 25, volume: 30, category_id: 4, predefined: true },
   { name: "日本酒", degree: 15, volume: 180, category_id: 5, predefined: true },
   { name: "ワイン", degree: 15, volume: 125, category_id: 6, predefined: true }
-])
+]
+
+drinks.each do |drink_attributes|
+  Drink.find_or_create_by!(name: drink_attributes[:name]) do |drink|
+    drink.degree = drink_attributes[:degree]
+    drink.volume = drink_attributes[:volume]
+    drink.category_id = drink_attributes[:category_id]
+    drink.predefined = drink_attributes[:predefined]
+  end
+end
 panda = Character.find_by(animal: "panda")
 if panda
   RandomSpeech.create!(

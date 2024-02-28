@@ -29,6 +29,9 @@ class HomeController < ApplicationController
       else
         @random_speech = @user.character.random_speeches.order('RANDOM()').first if @user.character
       end
+      @todays_records = @user.records.where(date: Date.today)
+      @total_alcohol_grams = @todays_records.sum(:alcohol_grams)
+      prepare_share_message
     end
     @character = @user.character if @user
   end
@@ -87,19 +90,24 @@ class HomeController < ApplicationController
     @hangover_records = current_user.records.where(hangover: true).order(date: :desc)
   end
 
+  
   def share
-    # 必要なデータを準備する
+      # 現在ログインしているユーザーのIDを使用して、その日のレコードを取得
+    @total_alcohol_grams = current_user.records.where(date: Date.today).sum(:alcohol_grams)
+  
+      # 他の必要なインスタンス変数をここに設定
   end
+
 
   def calculate_intimacy
     total_alcohol_grams = @user.records.sum(:alcohol_grams)
     @current_level, level_threshold = case total_alcohol_grams
-                                      when 0..30
-                                        [1, 30]
-                                      when 31..60
-                                        [2, 60]
-                                      when 61..90
-                                        [3, 90]
+                                      when 0..200
+                                        [1, 200]
+                                      when 201..400
+                                        [2, 400]
+                                      when 401..600
+                                        [3, 300]
                                       else
                                         [4, nil] # レベルMAXに達している場合
                                       end
@@ -127,6 +135,15 @@ class HomeController < ApplicationController
 
   def logged_in?
     !!current_user
+  end
+
+  def prepare_share_message
+    base_url = request.base_url # 現在のアプリケーションのベースURLを取得
+    if @total_alcohol_grams.positive?
+      @share_text = "今日は#{@total_alcohol_grams}gのアルコールを摂取しました！ #{base_url}"
+    else
+      @share_text = "今日はまだお酒を飲んでいません。 #{base_url}"
+    end
   end
   
 end

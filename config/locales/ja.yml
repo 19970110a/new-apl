@@ -1,0 +1,47 @@
+ja:
+  activerecord:
+    models:
+      contact: "お問い合わせ"
+      user: "ユーザー"
+      drink: "ドリンク"
+    attributes:
+      contact:
+        name: "名前"
+        email: "メール"
+        message: "内容"
+      user:
+        password: "パスワード"
+        password_confirmation: "パスワード（確認用）"
+        weight: "体重"
+        character: "どうぶつ"
+      drink:
+        name: "名前"
+        degree: "度数"
+        volume: "容量"
+    errors:
+      models:
+        contact:
+          attributes:
+            name:
+              blank: "名前を入力してください"
+            email:
+              blank: "メールアドレスを入力してください"
+              invalid: "メールアドレスが無効です"
+            message:
+              blank: "内容を入力してください"
+        user:
+          attributes:
+            password:
+              too_short: "が短すぎます（最小は%{count}文字です）"
+            password_confirmation:
+              blank: "を入力してください"
+            weight:
+              blank: "を入力してください"
+        drink:
+          attributes:
+            name:
+              blank: "を入力してください"
+            degree:
+              not_a_number: "は数値で入力してください"
+            volume:
+              not_a_number: "は数値で入力してください"

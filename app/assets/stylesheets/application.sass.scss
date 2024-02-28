@@ -1,18 +1,49 @@
 .character-speech {
   position: relative;
-  display: inline-block; /* または必要に応じて別のディスプレイプロパティ */
-  margin: 20px;
+  display: inline-block;
+  margin: 25px;
+  text-align: center; /* セリフを中央寄せ */
 }
+
+
+.speech-bubble {
+  width: 130%;
+  max-width: 600px; /* 吹き出しの最大幅をデスクトップで制限 */
+  height: auto; /* アスペクト比を保持 */
+  margin-bottom: 10px; /* 吹き出しとセリフの間隔 */
+}
+
 
 .speech-text {
   position: absolute;
-  top: 50%; /* 吹き出し画像内のテキストの位置を調整 */
-  left: 50%; /* 吹き出し画像内のテキストの位置を調整 */
-  transform: translate(-50%, -50%); /* テキストを中央に配置 */
-  color: black; /* テキストの色 */
-  font-size: 16px; /* テキストのサイズ */
-  width: 90%; /* 吹き出し内でテキストが占める幅 */
-  text-align: center; /* テキストを中央揃えに */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  color: black;
+  width: 60%; /* 吹き出し内のセリフの幅 */
+}
+.body-background {
+  background-image: url('/assets/animal.png'); // 開発環境用のパス
+  background-size: cover;
+  background-position: center;
+  background-repeat: repeat;
+}
+
+@media (max-width: 768px) {
+  .body-background {
+    background-image: url('/assets/animal1.png'); // スマホ用の背景画像パス
+    background-size: 600px 900px;
+    background-repeat: repeat;
+  }
+  .speech-bubble {
+    max-width: 100%; /* スマホサイズでは吹き出しを画面幅に合わせる */
+  }
+  .character-img {
+    width: 100%; /* スマホサイズでのキャラクター画像の幅を60%に設定 */
+    height: auto; /* アスペクト比を保持 */
+    min-height: 200px; /* スマホサイズで画像が小さくなりすぎないように最小の高さを設定 */
+  }
 }
 
 
@@ -27,14 +58,16 @@
 body, button, input, textarea {
   font-family: 'DotGothic16', sans-serif;
 }
-.body-background {
-  background-image: url('/assets/animal.png'); /* このパスはプリコンパイル後のパスに依存します */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+
+html, body {
+  height: 100%;
 }
-@media (max-width: 768px) {
-  .body-background {
-    background-image: asset-url('animal1.png'); /* Sassの場合 */
-  }
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main.flex-grow-1 {
+  flex: 1;
 }

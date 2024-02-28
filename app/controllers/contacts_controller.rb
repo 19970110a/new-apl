@@ -7,7 +7,7 @@ class ContactsController < ApplicationController
       redirect_to root_path, notice: 'お問い合わせありがとうございます。'
     else
       # 保存に失敗した場合の処理（例: エラーメッセージの表示）
-      render :new
+      render 'static_pages/contact'
     end
   end
 

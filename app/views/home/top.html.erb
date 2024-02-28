@@ -2,69 +2,89 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <!-- スタイルシートのリンクやその他のメタタグをここに挿入 -->
-</head>
-<body>
-  <header>
-  <%= render 'shared/header' %>
-  </header>
-
-  <main>
-    <div id="progress-bar">
-    <% if @current_level && @current_level < 4 %>
-    <p>次のレベルまであと<%= @remaining %>g</p>
-  <% elsif @current_level == 4 %>
-    <p>最高レベルに到達しました！</p>
-  <% end %>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>アルコール摂取量の追跡</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <div class="progress">
-  <div class="progress-bar" role="progressbar" style="width: <%= @current_percentage %>%;" aria-valuenow="<%= @current_percentage %>" aria-valuemin="0" aria-valuemax="100">
-    <%= @current_percentage %>% 完了
+</head>
+<body class="d-flex flex-column min-vh-100">
+  <header>
+    <%= render 'shared/header' %>
+  </header>
+  <style>
+  body {
+    font-family: 'DotGothic16', sans-serif;
+}
+  .container.my-3 {
+    padding-top: 40px; /* 100pxは例です。ヘッダーの高さに応じて調整してください。 */
+  }
+</style>
+
+  <main class="container my-3"> <!-- my-5からmy-3へ変更して外側のマージンを小さく -->
+  <div id="progress-bar" class="my-3 text-center"> <!-- my-5からmy-3へ変更して内側のマージンを小さく、全体を中央揃え -->
+    <% if @current_level && @current_level < 4 %>
+      <p class="text-center small">レベル<%= @current_level %>: 次のレベルまであと<%= @remaining %>g</p> <!-- smallクラスでテキストサイズを小さく -->
+    <% elsif @current_level == 4 %>
+      <p class="text-center small">最高レベルに到達しました！</p> <!-- smallクラスでテキストサイズを小さく -->
+    <% end %>
+    <div class="progress" style="width: 30%; margin: auto;"> <!-- 幅を40%から30%に変更してプログレスバーを小さく -->
+      <div class="progress-bar" role="progressbar" style="width: <%= @current_percentage %>%;" aria-valuenow="<%= @current_percentage %>" aria-valuemin="0" aria-valuemax="100">
+        <%= @current_percentage %>% アル度
+      </div>
+    </div>
   </div>
-</div>
-</div>
 
-<div class="progress">
-  <div class="progress-bar" role="progressbar" style="width: <%= @current_percentage %>%;" aria-valuenow="<%= @current_percentage %>" aria-valuemin="0" aria-valuemax="100"></div>
-</div>
-    </div>
-    
-    <!-- ここから吹き出しの表示 -->
-    <div class="character-speech">
-    <%= image_tag("speech.png", alt: "speech bubble", class: "speech-bubble") %>
-    <div class="speech-text" id="speech-text">
-      <% if @speech_text %>
-        <span id="time-to-sober" data-hours="<%= @hours %>" data-minutes="<%= @minutes %>">
-          <%= @speech_text %>
-        </span>
-      <% else %>
-        <%= @random_speech.alcohol_speeches %>
-      <% end %>
-    </div>
+  <div class="actions d-flex justify-content-center mt-2"> <!-- mt-3からmt-2へ変更してマージンを小さく -->
+    <%= link_to '飲むよ！', choose_drink_path, class: 'btn btn-primary btn-sm mx-1' %> <!-- btn-smでボタンサイズを小さく -->
+    <% share_message = @total_alcohol_grams.to_i.positive? ? "今日は#{@total_alcohol_grams}gのアルコールを摂取しました！" : "今日はまだお酒を飲んでいません。" %>
+    <%= link_to "共有！", "https://twitter.com/intent/tweet?text=#{CGI.escape(@share_text)}", target: "_blank", class: "btn btn-info btn-sm mx-1" %>
+
+<script>
+  function shareText(totalAlcoholGrams) {
+    if (totalAlcoholGrams > 0) {
+      return `今日は${totalAlcoholGrams}gのアルコールを摂取しました！`;
+    } else {
+      return "今日はまだお酒を飲んでいません。";
+    }
+  }
+
+  var totalAlcoholGrams = <%= @total_alcohol_grams.to_json %>;
+  var shareText = shareText(totalAlcoholGrams);
+</script>
   </div>
 
-    <!-- ここまで吹き出しの表示 -->
-
-    <div class="panda-image">
-  <% if @character %>
-    <div class="selected-character" id="character-image" data-character-id="<%= @character.id %>">
-      <!-- 変更箇所: 画像ファイルの選択を @user.character_image に基づいて行います -->
-      <%= image_tag @user.character_image, alt: @user.character.animal, class: "character-img" %>
+  <div class="d-flex flex-column align-items-center justify-content-center my-3"> <!-- my-5からmy-3へ変更してマージンを小さく -->
+    <div class="character-speech text-center my-2"> <!-- my-3からmy-2へ変更してマージンを小さく -->
+      <%= image_tag("speech.png", alt: "speech bubble", class: "speech-bubble img-fluid") %> <!-- img-fluidで画像サイズをレスポンシブに -->
+      <div class="speech-text small" id="speech-text"> <!-- smallクラスでテキストサイズを小さく -->
+        <% if @speech_text %>
+          <span id="time-to-sober" data-hours="<%= @hours %>" data-minutes="<%= @minutes %>">
+            <%= @speech_text %>
+          </span>
+        <% else %>
+          <%= @random_speech.alcohol_speeches %>
+        <% end %>
+      </div>
     </div>
-  <% end %>
-</div>
 
-    <div class="actions">
-      <%= link_to '飲むよ！', choose_drink_path, class: 'button' %>
-      <%= link_to "共有！", "https://twitter.com/intent/tweet?text=お好きなテキスト", target: "_blank", class: "button" %>
-    </div>
-  </main>
+    <% if @character %>
+  <div class="selected-character" id="character-image" data-character-id="<%= @character.id %>" style="width: 30%; margin: auto;"> <!-- コンテナの幅を50%にして中央揃え -->
+    <%= image_tag @user.character_image, alt: @user.character.animal, class: "character-img img-fluid", style: "max-width: 100%; height: auto;" %> <!-- max-widthを100%にして高さを自動調整 -->
+  </div>
+<% end %>
+  </div>
+</main>
 
-  <footer>
-  <%= render 'shared/footer' %>
+  <footer class="mt-auto">
+    <%= render 'shared/footer' %>
   </footer>
-
-  <script>
+</body>
+</html>
+<script>
 document.addEventListener('DOMContentLoaded', () => {
   // アルコールが抜けるまでの時間を更新する関数
   function updateSoberTime() {
@@ -101,5 +121,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 </script>
-</body>
-</html>

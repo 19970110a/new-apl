@@ -12,6 +12,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true
   validates :reset_password_token, uniqueness: true, allow_nil: true
   validates :weight, presence: true
+  validates :character_id, presence: true
    # その日に飲んだアルコールの合計グラム数を取得するメソッド
    def todays_alcohol_grams
     records.where('date = ?', Date.today).sum(:alcohol_grams)
@@ -20,11 +21,11 @@ class User < ApplicationRecord
   # 表示するキャラクター画像のファイル名を返すメソッド
   def character_image
     case todays_alcohol_grams
-    when 0..30
+    when 0..200
       "#{character.animal}.png"
-    when 31..60
+    when 201..400
       "#{character.animal}02.png"
-    when 61..90
+    when 401..600
       "#{character.animal}03.png"
     else
       "#{character.animal}04.png"

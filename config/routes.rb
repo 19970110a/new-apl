@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get 'home', to: 'static_pages#home'
   get 'contact', to: 'static_pages#contact'
   get 'privacy_policy', to: 'static_pages#privacy_policy'
+  get 'terms', to: 'static_pages#terms', as: 'terms'
  
   # Users
   resources :users, only: [:new, :create]
