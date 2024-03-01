@@ -73,7 +73,7 @@
 
     <% if @character %>
   <div class="selected-character" id="character-image" data-character-id="<%= @character.id %>" style="width:40%; margin: auto;"> <!-- コンテナの幅を50%にして中央揃え -->
-    <%= image_tag @user.character_image, alt: @user.character.animal, class: "character-img img-fluid", style: "max-width: 100%; height: auto;" %> <!-- max-widthを100%にして高さを自動調整 -->
+    <%= image_tag @user.character_image, alt: @user.character.animal, class: "character-img img-fluid", style: "max-width: 78%; height: auto;" %> <!-- max-widthを100%にして高さを自動調整 -->
   </div>
 <% end %>
   </div>

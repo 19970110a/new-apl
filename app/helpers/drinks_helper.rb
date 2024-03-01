@@ -1,17 +1,21 @@
 module DrinksHelper
-  def image_filename_for_drink(drink_name)
-    # ドリンク名に基づいて画像ファイル名をマッピング
-    mapping = {
-      "ビール" => "beer.png",
-      "サワー" => "sour.png",
-      "ハイボール" => "highball.png",
-      "焼酎" => "shochu.png",
-      "日本酒" => "sake.png",
-      "ワイン" => "wine.png",
-      # その他のドリンク名に対するマッピングを追加
-      "その他" => "other.png"
-    }
-    # マッピングから画像ファイル名を取得、デフォルトは "default.png"
-    mapping[drink_name] || "default.png"
+  def image_filename_for_category(category_id)
+    case category_id
+    when 1 
+      "beer.png"
+    when 2 
+      "sour.png"
+    when 3 
+      "highball.png"
+    when 4
+      "shochu.png"
+    when 5
+      "sake.png"
+    when 6
+      "wine.png"
+    # その他のカテゴリーに対する画像ファイル名を追加
+    else
+      "default.png"
+    end
   end
 end

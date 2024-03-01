@@ -21,9 +21,9 @@
       <%= form_tag(records_path, method: :post) do %>
         <div class="row">
         <% @drinks.each do |drink| %>
-            <div class="col-6 col-md-2 mb-4"> <!-- スマホでは2列、PCでは6列になるよう調整 -->
+            <div class="col-6 col-md-2 mb-4">
               <div class="card">
-                <%= image_tag(image_filename_for_drink(drink.name), alt: drink.name, class: "card-img-top drink-image img-fluid") %>
+              <%= image_tag(image_filename_for_category(drink.category_id), alt: drink.name, class: "card-img-top drink-image img-fluid") %>
                 <div class="card-body">
                   <h5 class="card-title"><%= drink.name %></h5>
                   <p class="card-text"><%= drink.volume %>ml ・ <%= drink.degree %>%</p>

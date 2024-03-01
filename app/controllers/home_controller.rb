@@ -101,21 +101,25 @@ class HomeController < ApplicationController
 
   def calculate_intimacy
     total_alcohol_grams = @user.records.sum(:alcohol_grams)
-    @current_level, level_threshold = case total_alcohol_grams
-                                      when 0..200
-                                        [1, 200]
-                                      when 201..400
-                                        [2, 400]
-                                      when 401..600
-                                        [3, 300]
-                                      else
-                                        [4, nil] # レベルMAXに達している場合
-                                      end
-    @current_level ||= 1  # @current
+    @current_level, start_threshold, level_threshold = case total_alcohol_grams
+                                                       when 0..200
+                                                         [1, 0, 200]
+                                                       when 201..400
+                                                         [2, 201, 400]
+                                                       when 401..600
+                                                         [3, 401, 600]
+                                                       else
+                                                         [4, 601, nil] # レベルMAXに達している場合
+                                                       end
+    @current_level ||= 1  # @current_levelがnilの場合は1に設定
+  
     # 次のレベルに必要な量や進捗の割合を計算
     if level_threshold
-      @remaining = level_threshold - total_alcohol_grams + 1
-      @current_percentage = (total_alcohol_grams.to_f / level_threshold * 100).round(2)
+      @remaining = [level_threshold - total_alcohol_grams, 0].max
+      # レベル内での進捗を計算
+      progress_within_level = total_alcohol_grams - start_threshold
+      total_progress_for_level = level_threshold - start_threshold
+      @current_percentage = (progress_within_level.to_f / total_progress_for_level * 100).round(2)
     else
       @remaining = 0 # レベルMAXの場合
       @current_percentage = 100
