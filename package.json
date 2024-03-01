@@ -7,7 +7,7 @@
     "@hotwired/turbo-rails": "^7.3.0",
     "@popperjs/core": "^2.11.8",
     "@rails/webpacker": "5.4.4",
-    "bootstrap": "5.3.0",
+    "bootstrap": "5.3.2",
     "chart.js": "^4.4.1",
     "chartkick": "^5.0.1",
     "esbuild": "^0.19.11",
@@ -23,5 +23,9 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "webpack-dev-server": "^3"
+  }
+  "engines": {
+    "node": "14.x",
+    "yarn": "1.22.x"
   }
 }
