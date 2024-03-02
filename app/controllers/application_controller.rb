@@ -8,5 +8,5 @@ class ApplicationController < ActionController::Base
     flash[:alert] = "ログインが必要です"
     redirect_to login_url # ログインページへのパスに適宜置き換えてください
   end
-end
+ end
 end
