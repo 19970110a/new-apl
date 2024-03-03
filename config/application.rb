@@ -12,6 +12,13 @@ module App
     config.load_defaults 7.0
     config.time_zone = 'Tokyo'
     config.i18n.default_locale = :ja
+    initializer 'setup_database_connection_check', before: :initialize_database do |app|
+      if ARGV.any? { |arg| arg == 'assets:precompile' }
+        puts "Skipping database connection for assets:precompile"
+      else
+        ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+      end
+    end
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
