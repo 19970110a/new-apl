@@ -6,14 +6,17 @@ FROM $RUBY_VERSION
 ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 
-# Node.jsとYarnをインストール
-RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
+# Node.jsのバージョンを指定
+ARG NODE_VERSION=20.x
+
+# Node.jsをインストール
+RUN curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION | bash - && \
     apt-get update -qq && \
-    apt-get install -y nodejs && \
-    curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null && \
-    echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-    apt-get update -qq && \
-    apt-get install -y yarn
+    apt-get install -y nodejs
+
+
+# Yarnをインストール
+RUN npm install -g yarn@1.22.x
 
 # アプリケーションのディレクトリを設定
 WORKDIR /app
