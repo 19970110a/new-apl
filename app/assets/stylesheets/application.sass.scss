@@ -24,7 +24,7 @@
   width: 60%; /* 吹き出し内のセリフの幅 */
 }
 .body-background {
-  background-image: asset-url('animal.png'); // 開発環境用のパス
+  background-image: url('../images/animal.png'); // 開発環境用のパス
   background-size: cover;
   background-position: center;
   background-repeat: repeat;
@@ -32,7 +32,7 @@
 
 @media (max-width: 768px) {
   .body-background {
-    background-image: asset-url('animal1.png'); // スマホ用の背景画像パス
+    background-image: url('../images/animal1.png'); // スマホ用の背景画像パス
     background-size: 600px 900px;
     background-repeat: repeat;
   }
