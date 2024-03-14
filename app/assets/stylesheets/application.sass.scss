@@ -1,3 +1,4 @@
+@import "bootstrap/scss/bootstrap";
 .character-speech {
   position: relative;
   display: inline-block;
@@ -45,6 +46,8 @@
     min-height: 200px; /* スマホサイズで画像が小さくなりすぎないように最小の高さを設定 */
   }
 }
+
+
 
 
 .notice {

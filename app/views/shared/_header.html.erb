@@ -1,22 +1,19 @@
 
-<nav class="navbar navbar-expand-lg navbar-light bg-info fixed-top">
+<nav class="navbar navbar-expand navbar-light bg-info fixed-top">
   <div class="container">
     <!-- ロゴやアプリケーション名など、ナビゲーションバーのブランドを設定 -->
     <%= link_to 'SAKE ZUKI', top_path, class: "navbar-brand" %>
     
-    <!-- モバイルビューで表示されるトグルボタン -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <!-- トグルボタンの部分は削除 -->
     
     <!-- ナビゲーションリンク -->
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <%= link_to 'アルコールチェック', check_alcohol_path, class: "nav-link" %>
+          <%= link_to '二日酔い', check_alcohol_path, class: "nav-link" %>
         </li>
         <li class="nav-item">
-          <%= link_to '飲酒グラフ', drinking_graph_path, class: "nav-link" %>
+          <%= link_to 'グラフ', drinking_graph_path, class: "nav-link" %>
         </li>
       </ul>
       <form class="d-flex" action="<%= logout_path %>" method="post">

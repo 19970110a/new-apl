@@ -65,12 +65,14 @@ if bear
   )
 end
 if User.find_by(email: 'admin@example.com').nil?
+  character = Character.find_by(id: 1)
   User.create!(
     username: 'admin',
     email: 'admin@example.com',
     password: 'securepassword',
     password_confirmation: 'securepassword',
     admin: true,
-    weight: 60  
+    weight: 60,
+    character_id: character.id
   )
 end

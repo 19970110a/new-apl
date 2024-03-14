@@ -1,43 +1,33 @@
-# Rubyのバージョンを指定
-ARG RUBY_VERSION=ruby:3.2.2
-# Node.jsのバージョンを指定
-ARG NODE_VERSION=19
+FROM ruby:3.1.2
 
-FROM $RUBY_VERSION
+ENV RAILS_ENV=production
 
-ARG RUBY_VERSION
-ARG NODE_VERSION
+RUN apt-get update -qq && apt-get install -y build-essential libv8-dev
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g yarn
 
-ENV LANG C.UTF-8
-ENV TZ Asia/Tokyo
+WORKDIR /myapp
 
-# Node.jsをインストール
-RUN curl -fsSL https://deb.nodesource.com/setup_${NODE_VERSION}.x | bash - \
-    && apt-get install -y nodejs
-
-# Yarnをインストール
-RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null \
-    && echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list \
-    && apt-get update -qq \
-    && apt-get install -y yarn
-
-# アプリケーションのディレクトリを設定
-RUN mkdir /app
-WORKDIR /app
-
-# Rubyのbundlerをインストール
-RUN gem install bundler
-
-# Gemfileをコピー
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
-
-# yarn.lockをコピー
-COPY yarn.lock /app/yarn.lock
-
-# BundlerとYarnで依存関係をインストール
+COPY Gemfile /myapp/Gemfile
+COPY Gemfile.lock /myapp/Gemfile.lock
+RUN bundle config set --local without 'development test'
 RUN bundle install
+
+COPY package.json /myapp/package.json
+COPY yarn.lock /myapp/yarn.lock
+# すでにローカルでbootstrap等を含む依存関係を追加しているため、yarn installのみでOK
 RUN yarn install
 
-# アプリケーションのソースコードをコピー
-COPY . /app
+COPY . /myapp
+
+# ここでbootstrapを含む任意のnpmパッケージをインストール
+RUN yarn add bootstrap
+
+# アセットのプリコンパイル
+RUN RAILS_ENV=production bundle exec rake assets:precompile
+
+COPY start.sh /start.sh
+RUN chmod 744 /start.sh
+
+CMD ["sh", "/start.sh"]
