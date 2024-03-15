@@ -9,19 +9,23 @@ RUN curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
 
 WORKDIR /myapp
 
+# Bundlerのバージョンを指定してインストール
+RUN gem install bundler:2.5.4
+
 COPY Gemfile /myapp/Gemfile
 COPY Gemfile.lock /myapp/Gemfile.lock
 RUN bundle config set --local without 'development test'
+
+# Bundlerのバージョンを更新
+RUN bundle update --bundler
 RUN bundle install
 
 COPY package.json /myapp/package.json
 COPY yarn.lock /myapp/yarn.lock
-# すでにローカルでbootstrap等を含む依存関係を追加しているため、yarn installのみでOK
 RUN yarn install
 
 COPY . /myapp
 
-# ここでbootstrapを含む任意のnpmパッケージをインストール
 RUN yarn add bootstrap
 
 # アセットのプリコンパイル

@@ -9,5 +9,6 @@ echo "Seeding database..."
 bundle exec rake db:seed
 
 # Railsサーバーを起動
+# Herokuの動的に割り当てられた$PORT環境変数を使用
 echo "Starting Rails server..."
-bundle exec rails s -p 3000 -b '0.0.0.0'
+bundle exec rails s -p $PORT -b '0.0.0.0'
